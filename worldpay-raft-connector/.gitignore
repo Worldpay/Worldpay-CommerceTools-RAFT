@@ -1,0 +1,3 @@
+/dist/**
+/packages/**/dist/**
+**/tsconfig.tsbuildinfo

@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts", "**/dist/**"],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "inlineSourceMap": true,
+    "declaration": true,
+    "experimentalDecorators": true,
+    "types": ["node", "jest"],
+    "strict": false
+  }
+}

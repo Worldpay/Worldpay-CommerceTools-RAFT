@@ -1,0 +1,2273 @@
+{
+	"info": {
+		"_postman_id": "57579110-8203-409b-b322-f7034fc391a0",
+		"name": "GraphQL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9308725"
+	},
+	"item": [
+		{
+			"name": "Authorization",
+			"item": [
+				{
+					"name": "Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var cookie = pm.response.headers.get('Set-Cookie')",
+									"pm.environment.set(\"bffJwt\", pm.response.json().data.jwt);",
+									"pm.environment.set(\"bffRefreshToken\", cookie.split(';')[0].split('=')[1]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Site-Key",
+								"value": "{{bffSiteKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{bffEndpoint}}/auth/login/anonymous",
+							"host": [
+								"{{bffEndpoint}}"
+							],
+							"path": [
+								"auth",
+								"login",
+								"anonymous"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Certification",
+					"item": [
+						{
+							"name": "Brand Tests",
+							"item": [
+								{
+									"name": "Payment test Visa",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000000386D\",\n        command: \"testVisa\"\n      }) {\n        orderId\n        request\n        response\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test Mastercard",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testMastercard\"\n      }) {\n        orderId\n        request\n        response\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test Amex",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testAmex\"\n      }) {\n        orderId\n        request\n        response\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test Discover",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testDiscover\"\n      }) {\n        orderId\n        request\n        response\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "$0 AVS Verification",
+							"item": [
+								{
+									"name": "Payment test EC 1 AVS Only Verification",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testAVSOnlyVerification\"\n      }) {\n        orderId\n        request\n        response\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Authorizations - CVV Only",
+							"item": [
+								{
+									"name": "Payment test EC 9 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC9\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 10 Completion",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        paymentId: \"paymentId from testEC9\",\n        command: \"testEC10\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 11 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC11\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 12 Completion",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC12\",\n        paymentId: \"paymentId from testEC11\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 12 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC12r\",\n        paymentId: \"paymentId from testEC11\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 13 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC13\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 14 Completion",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC14\",\n        paymentId: \"paymentId from testEC13\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 15 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC15\",\n        paymentId: \"paymentId from testEC13\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 16 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC16\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 17 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC17\",\n        paymentId: \"paymentId from testEC16\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Authorizations - AVS Only",
+							"item": [
+								{
+									"name": "Payment test EC 18 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC18\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 19 Completion",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC19\",\n        paymentId: \"paymentId from testEC18\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 20 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC20\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 21 Completion",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC21\",\n        paymentId: \"paymentId from testEC20\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 21 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC21r\",\n        paymentId: \"paymentId from testEC20\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 22 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC22\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 23 Completion",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC23\",\n        paymentId: \"paymentId from testEC22\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 24 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC24\",\n        paymentId: \"paymentId from testEC22\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 25 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC25\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 26 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC26\",\n        paymentId: \"paymentId from testEC25\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Authorizations - AVS and CVV",
+							"item": [
+								{
+									"name": "Payment test EC 27 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC27\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 28 Completion",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC28\",\n        paymentId: \"paymentId from testEC27\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 43 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC43\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 44 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC44\",\n        paymentId: \"paymentId from testEC43\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 45 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC45\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 46 Completion",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC46\",\n        paymentId: \"paymentId from testEC45\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 47 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC47\",\n        paymentId: \"paymentId from testEC45\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Partial Authorization Reversal/Void",
+							"item": [
+								{
+									"name": "Payment test EC 48 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC48\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 49 Reversal Partial",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC49\",\n        paymentId: \"paymentId from testEC48\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 50 Completion Partial",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC50\",\n        paymentId: \"paymentId from testEC48\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Force/Voice Authorizations",
+							"item": [
+								{
+									"name": "Payment test EC 71 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC71\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 72 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC72\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EC 73 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEC73\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Multi-Clearing Authorizations",
+							"item": [
+								{
+									"name": "Payment test EMCA 1 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA1\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EMCA 2 Completion Ship1",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA2\",\n        paymentId: \"paymentId from testEMCA1\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EMCA 3 Completion Ship2",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA3\",\n        paymentId: \"paymentId from testEMCA1\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EMCA 8 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA8\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EMCA 9 Completion Ship1",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA9\",\n        paymentId: \"paymentId from testEMCA8\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EMCA 10 Completion Ship2",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA10\",\n        paymentId: \"paymentId from testEMCA8\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EMCA 11 Completion Ship3",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA11\",\n        paymentId: \"paymentId from testEMCA8\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EMCA 12 Completion Ship4",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA12\",\n        paymentId: \"paymentId from testEMCA8\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EMCA 13 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA13\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EMCA 14 Completion Ship1",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA14\",\n        paymentId: \"paymentId from testEMCA13\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EMCA 15 Completion Ship2",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA15\",\n        paymentId: \"paymentId from testEMCA13\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EMCA 16 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEMCA16\",\n        paymentId: \"paymentId from testEMCA13\",\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "PINLESS Debit Conversion",
+							"item": [
+								{
+									"name": "Payment test EPLD 6 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEPLD6\"\n      }) {\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EPLD 6 Authorization Copy",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEPLD6\"\n      }) {\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EPLD 8 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEPLD8\"\n      }) {\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EPLD 9 Completion",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEPLD9\",\n        paymentId: \"paymentId from testEPLD8\",\n      }) {\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EPLD 10 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEPLD10\"\n      }) {\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EPLD 11 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEPLD11\",\n        paymentId: \"paymentId from testEPLD10\",\n      }) {\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EPLD 12 Authorization",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEPLD12\"\n      }) {\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EPLD 13 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderId: \"2b711c82-9bc5-41b2-9f2b-5e7b7d82f4d5\",\n        command: \"testEPLD13\",\n        paymentId: \"paymentId from testEPLD12\",\n      }) {\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Gift Cards",
+							"item": [
+								{
+									"name": "Payment test EGC 10 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000003031D\",\n        command: \"testEGC10\",\n      }) {\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Payment test EGC 70 Reversal",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{bffJwt}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000003066D\",\n        command: \"testEGC70\",\n      }) {\n        request\n        response\n        payment\n  }\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{bffEndpoint}}/graphql",
+											"host": [
+												"{{bffEndpoint}}"
+											],
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Payment completion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Bearer {{bffJwt}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Site-Key",
+								"value": "p1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000000776D\",\n        command: \"completion\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{bffEndpoint}}/graphql",
+							"host": [
+								"{{bffEndpoint}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment completion Partial",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bffJwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000000776D\",\n        command: \"completion-partial\"\n        transactionAmount: 8990\n        paymentSequenceNumber: \"02\"\n        paymentSequenceCount: \"02\"\n        isFinalShipment: true\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{bffEndpoint}}/graphql",
+							"host": [
+								"{{bffEndpoint}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment cancel",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bffJwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000000776D\",\n        command: \"cancel\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{bffEndpoint}}/graphql",
+							"host": [
+								"{{bffEndpoint}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment cancel Partial",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bffJwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"\",\n        command: \"cancel-partial\"\n        transactionAmount: 2010\n        paymentSequenceNumber: \"02\"\n        paymentSequenceCount: \"02\"\n        isFinalShipment: true\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{bffEndpoint}}/graphql",
+							"host": [
+								"{{bffEndpoint}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment refund",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bffJwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000000776D\",\n        command: \"refund\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{bffEndpoint}}/graphql",
+							"host": [
+								"{{bffEndpoint}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment refund Partial",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bffJwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000000776D\",\n        command: \"refund\",\n        transactionAmount: 1424\n          }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{bffEndpoint}}/graphql",
+							"host": [
+								"{{bffEndpoint}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gift Card pre-auth",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Bearer {{bffJwt}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Site-Key",
+								"value": "p1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000003106D\",\n        command: \"gc-pre-auth\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{bffEndpoint}}/graphql",
+							"host": [
+								"{{bffEndpoint}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gift Card completion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Bearer {{bffJwt}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Site-Key",
+								"value": "p1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000003106D\",\n        command: \"gc-completion\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{bffEndpoint}}/graphql",
+							"host": [
+								"{{bffEndpoint}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gift Card cancel pre-auth",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Bearer {{bffJwt}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Site-Key",
+								"value": "p1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000000776D\",\n        command: \"gc-cancel\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{bffEndpoint}}/graphql",
+							"host": [
+								"{{bffEndpoint}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gift Card refund",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Bearer {{bffJwt}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Site-Key",
+								"value": "p1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  raftTestPayment(input: {\n        orderNumber: \"MP124000003106D\",\n        command: \"gc-refund\"\n      }) {\n        orderId\n        request\n        response\n        payment\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{bffEndpoint}}/graphql",
+							"host": [
+								"{{bffEndpoint}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{bffJwt}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}

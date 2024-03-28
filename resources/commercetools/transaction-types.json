@@ -1,0 +1,42 @@
+{
+  "key": "raft-transaction",
+  "name": {
+    "en": "Transaction"
+  },
+  "description": {
+    "en": "The type for custom RAFT transaction fields"
+  },
+  "resource_type_ids": ["transaction"],
+  "fieldDefinitions": [
+    {
+      "name": "authorizationNumber",
+      "label": {
+        "en": "The RAFT ReferenceTraceNumbers.AuthorizationNumber from an authorization, used for completion"
+      },
+      "type": {
+        "name": "String"
+      },
+      "required": false
+    },
+    {
+      "name": "retrievalREFNumber",
+      "label": {
+        "en": "The RAFT ReferenceTraceNumbers.RetrievalREFNumber from an authorization, used for completion"
+      },
+      "type": {
+        "name": "String"
+      },
+      "required": false
+    },
+    {
+      "name": "retryCount",
+      "label": {
+        "en": "The number of times this message has been retried (empty if it was successful the first time)"
+      },
+      "type": {
+        "name": "Number"
+      },
+      "required": false
+    }
+  ]
+}

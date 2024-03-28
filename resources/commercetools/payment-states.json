@@ -1,0 +1,57 @@
+[
+  {
+    "key": "payment-open",
+    "type": "PaymentState",
+    "initial": true,
+    "name": {
+      "en": "Open"
+    },
+    "description": {
+      "en": "Payment is open (pending), waiting processing"
+    }
+  },
+  {
+    "key": "payment-failed",
+    "type": "PaymentState",
+    "initial": true,
+    "name": {
+      "en": "Failed"
+    },
+    "description": {
+      "en": "The payment failed"
+    }
+  },
+  {
+    "key": "payment-paid",
+    "type": "PaymentState",
+    "initial": true,
+    "name": {
+      "en": "Paid"
+    },
+    "description": {
+      "en": "The payment was successfully completed"
+    }
+  },
+  {
+    "key": "payment-refunded",
+    "type": "PaymentState",
+    "initial": true,
+    "name": {
+      "en": "Refunded"
+    },
+    "description": {
+      "en": "The payment was refunded"
+    }
+  },
+  {
+    "key": "payment-cancelled",
+    "type": "PaymentState",
+    "initial": true,
+    "name": {
+      "en": "Cancelled"
+    },
+    "description": {
+      "en": "The payment was cancelled"
+    }
+  }
+]

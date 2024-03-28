@@ -1,0 +1,25 @@
+{
+  "key": "customer",
+  "name": {
+    "en": "Customer RAFT data"
+  },
+  "description": {
+    "en": "Customer Type"
+  },
+  "resourceTypeIds": ["customer"],
+  "fieldDefinitions": [
+    {
+      "name": "raftTokenizedCards",
+      "label": {
+        "en": "The customer's RAFT tokenized payment cards"
+      },
+      "required": false,
+      "type": {
+        "name": "Set",
+        "elementType": {
+          "name": "String"
+        }
+      }
+    }
+  ]
+}

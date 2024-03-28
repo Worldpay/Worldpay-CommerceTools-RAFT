@@ -1,0 +1,136 @@
+[
+  {
+    "key": "worldpay-raft-type",
+    "name": {
+      "en": "A Worldpay RAFT Payment"
+    },
+    "description": {
+      "en": "A payment using the Worldpay RAFT specification, see https://developerengine.fisglobal.com/apis/native-raft"
+    },
+    "resourceTypeIds": ["payment"],
+    "fieldDefinitions": [
+      {
+        "name": "request",
+        "label": {
+          "en": "The request that was sent to Worldpay RAFT"
+        },
+        "required": false,
+        "type": {
+          "name": "String"
+        },
+        "inputHint": "MultiLine"
+      },
+      {
+        "name": "tokenizedPAN",
+        "label": {
+          "en": "The tokenized PAN as returned from RAFT"
+        },
+        "required": false,
+        "type": {
+          "name": "String"
+        },
+        "inputHint": "SingleLine"
+      },
+      {
+        "name": "STPReferenceNUM",
+        "label": {
+          "en": "The STPData.STPReferenceNUM returned from RAFT"
+        },
+        "required": false,
+        "type": {
+          "name": "String"
+        },
+        "inputHint": "SingleLine"
+      },
+      {
+        "name": "PinlessConverted",
+        "label": {
+          "en": "Is the transaction PinlessConverted?"
+        },
+        "required": false,
+        "type": {
+          "name": "Boolean"
+        },
+        "inputHint": "SingleLine"
+      },
+      {
+        "name": "expirationDate",
+        "label": {
+          "en": "The expiration date of a card"
+        },
+        "required": false,
+        "type": {
+          "name": "String"
+        },
+        "inputHint": "SingleLine"
+      },
+      {
+        "name": "gcSecurityCode",
+        "label": {
+          "en": "The security code of a gift card"
+        },
+        "required": false,
+        "type": {
+          "name": "String"
+        },
+        "inputHint": "SingleLine"
+      }
+    ]
+  },
+  {
+    "key": "worldpay-raft-interface-interaction",
+    "name": {
+      "en": "Worldpay RAFT Payment Interaction"
+    },
+    "description": {
+      "en": ""
+    },
+    "resourceTypeIds": ["payment-interface-interaction"],
+    "fieldDefinitions": [
+      {
+        "name": "createdAt",
+        "label": {
+          "en": "Date Created"
+        },
+        "required": true,
+        "type": {
+          "name": "DateTime"
+        },
+        "inputHint": "SingleLine"
+      },
+      {
+        "name": "apiTransactionId",
+        "label": {
+          "en": "API Transaction ID"
+        },
+        "required": false,
+        "type": {
+          "name": "String"
+        },
+        "inputHint": "SingleLine"
+      },
+      {
+        "name": "request",
+        "label": {
+          "en": "Worldpay RAFT Message that was sent"
+        },
+        "required": true,
+        "type": {
+          "name": "String"
+        },
+        "inputHint": "MultiLine"
+      },
+      {
+        "name": "response",
+        "label": {
+          "en": "Worldpay RAFT Response received"
+        },
+        "required": false,
+        "type": {
+          "name": "String"
+        },
+        "inputHint": "MultiLine"
+      }
+    ]
+  }
+]

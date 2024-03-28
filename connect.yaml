@@ -1,0 +1,48 @@
+deployAs:
+  - name: worldpay-raft-connector
+    applicationType: service
+    endpoint: /service
+    scripts:
+      postDeploy: npm install && npm run build && npm run connector:post-deploy
+      preUndeploy: npm install && npm run build && npm run connector:pre-undeploy
+    configuration:
+      standardConfiguration:
+        - key: CTP_REGION
+          required: true
+          description: commercetools Composable Commerce API region
+      securedConfiguration:
+        - key: CTP_PROJECT_KEY
+          required: true
+          description: commercetools Composable Commerce project key
+        - key: CTP_CLIENT_ID
+          required: true
+          description: commercetools Composable Commerce client ID
+        - key: CTP_CLIENT_SECRET
+          required: true
+          description: commercetools Composable Commerce client secret
+        - key: CTP_SCOPES
+          description: commercetools Composable Commerce client scope
+        - key: CONNECTOR_SECRET
+          required: true
+          description: Worldpay RAFT connector secret (for basic authentication)
+        - key: WORLDPAY_MERCHANT_ID
+          description: Worldpay RAFT merchantId
+          required: true
+        - key: WORLDPAY_URL
+          description: Worldpay RAFT api endpoint url
+          required: true
+        - key: WORLDPAY_PATH
+          description: Worldpay RAFT api path
+          required: true
+        - key: WORLDPAY_LICENSE
+          description: Worldpay RAFT license
+          required: true
+        - key: WORLDPAY_TIMEOUT_MS
+          description: Worldpay RAFT timeout
+          required: true
+        - key: WORLDPAY_STP_BANK_ID
+          description: Worldpay RAFT BankId
+          required: true
+        - key: WORLDPAY_STP_TERMINAL_ID
+          description: Worldpay RAFT terminalId
+          required: true

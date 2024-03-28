@@ -1,0 +1,39 @@
+{
+  "name": "@gradientedge/worldpay-raft-transformers",
+  "version": "0.0.3",
+  "description": "Worldpay RAFT message transformers for commercetools",
+  "author": "Gradient Edge <info@gradientedge.com>",
+  "homepage": "https://github.com/Worldpay/Worldpay-CommerceTools-RAFT#readme",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "private": true,
+  "files": ["dist", "!dist/**/__tests__"],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist && rm -f tsconfig.tsbuildinfo",
+    "build": "tsc --build",
+    "build:watch": "tsc --build --incremental --watch",
+    "lint": "eslint . --ext .ts",
+    "prettier": "prettier --cache --check \"**/*.{ts,js,json}\"",
+    "prettify": "prettier --cache --write \"**/*.{ts,js,json}\"",
+    "test": "jest --config jest.config.cjs",
+    "test:coverage": "jest --config jest.config.cjs --coverage --collectCoverageFrom='src/**/*.{ts,jxs}'"
+  },
+  "dependencies": {
+    "@commercetools/platform-sdk": "7.0.0",
+    "@commercetools/sdk-client-v2": "2.3.0",
+    "@gradientedge/logger": "4.0.0",
+    "@gradientedge/worldpay-raft-messages": "file:../messages",
+    "lodash": "4.17.21"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.3",
+    "@types/jest": "^29.5.8",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
+    "eslint": "^8.54.0",
+    "prettier": "^3.1.0",
+    "ts-jest": "^29.1.1"
+  }
+}
