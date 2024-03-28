@@ -1,0 +1,15 @@
+node_modules
+dist
+.coverage
+__tests__
+jest.config.js
+README.md
+connect.yaml
+infrastructure
+.gitignore
+.github
+.husky
+.idea
+.nvmrc
+docs
+.env

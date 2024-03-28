@@ -1,6 +1,6 @@
 {
   "name": "@gradientedge/worldpay-raft-connector",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Worldpay RAFT connector for commercetools",
   "author": "Gradient Edge team <info@gradientedge.com>",
   "homepage": "https://github.com/gradientedge/TODO#readme",

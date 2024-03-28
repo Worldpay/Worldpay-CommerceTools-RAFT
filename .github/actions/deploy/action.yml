@@ -1,0 +1,17 @@
+name: Deploy Application
+description: Deploy Application
+
+inputs:
+  working-dir-app:
+    description: 'set the current application working directory'
+    required: true
+    default: './worldpay-raft-connector'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Deploy Application
+      working-directory: ${{ inputs.working-dir-infra }}
+      shell: bash
+      run: |
+        "echo TODO"

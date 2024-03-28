@@ -1,0 +1,23 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# this sets existing branch
+current_branch="$(git rev-parse --abbrev-ref HEAD)"
+
+# ignore check commit messages on selected branch
+[[ "$current_branch" =~ ^(main|dependabot/.*|changeset-release/.*)$ ]] && exit 0
+
+# regex to validate in commit msg
+commit_regex='(WCRI-[0-9]+|Merge|feat(WCRI-[0-9]+)|fix(WCRI-[0-9]+)|docs(WCRI-[0-9]+)|build(WCRI-[0-9]+)|chore+)'
+error_msg="Your commit message is missing a JIRA Issue 'WCRI-1234'. Regex: $commit_regex"
+
+if ! grep -qE "$commit_regex" "$1"; then
+    echo "$error_msg" >&2
+
+    read -n1 -p "Do you want to CONTINUE? [Y/n]" user_input < /dev/tty
+    case $user_input in
+        y|Y) exit 0 ;;
+        n|N) exit 1 ;;
+        *) exit 1 ;;
+    esac
+fi

@@ -1,6 +1,6 @@
 {
   "name": "@gradientedge/worldpay-raft-messages",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Worldpay RAFT messages for commercetools",
   "author": "Gradient Edge <info@gradientedge.com>",
   "homepage": "https://github.com/Worldpay/Worldpay-CommerceTools-RAFT#readme",
