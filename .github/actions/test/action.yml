@@ -1,0 +1,17 @@
+name: test application(s)
+description: test application(s)
+
+inputs:
+  working-dir-app:
+    description: 'set the current application working directory'
+    required: true
+    default: './worldpay-raft-connector'
+
+runs:
+  using: "composite"
+  steps:
+    - name: test
+      working-directory: ${{ inputs.working-dir-app }}
+      shell: bash
+      run: |
+        npm run test

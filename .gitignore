@@ -1,0 +1,13 @@
+node_modules
+coverage
+
+.DS_Store
+.vscode
+.idea/
+**/dist
+**/build
+**/*.docx
+.env
+**/tsconfig.tsbuildinfo
+package-lock.json
+**/*.tgz

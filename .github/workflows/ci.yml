@@ -1,0 +1,34 @@
+on:
+  pull_request:
+    branches:
+      - '**'
+  push:
+    branches:
+      - main
+
+name: Worldpay RAFT commercetools connector - Release Pipeline
+
+env:
+  name: Worldpay RAFT connector - Release Pipeline
+  NODE_OPTIONS: --max_old_space_size=8192
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+   build-and-test:
+    name: Validate Job
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: build
+        uses: ./.github/actions/build-application
+      - name: Test
+        uses: ./.github/actions/test
