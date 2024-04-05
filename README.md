@@ -32,7 +32,7 @@ The below diagram shows an overview of the steps within the journey to create / 
 
 For full details of the connector:
 
-* [User Guide](https://github.com/Worldpay/Worldpay-CommerceTools-RAFT/blob/feature/initial-version/resources/docs/Worldpay%20RAFT%20User%20Guide.pdf)
+* [User Guide](https://github.com/Worldpay/Worldpay-CommerceTools-RAFT/blob/main/resources/docs/Worldpay%20RAFT%20User%20Guide.pdf)
 * [Technical Guide](./resources/docs/TechnicalDocumentation.md)
 * [Deployment Guide](./resources/docs/DeploymentGuide.md)
 
