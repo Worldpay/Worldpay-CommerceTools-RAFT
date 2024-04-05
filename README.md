@@ -1,6 +1,7 @@
 ![](Logo.png)
 
-The worldpay-commercetools-RAFT-connector module provides integration between commercetools and Worldpay RAFT with support for the following payment use cases:
+The worldpay-RAFT-commercetools-connector module provides integration between commercetools and the Worldpay Native RAFT API, to minimize implementation timescales, and client-side configuration required. It supports the following use cases:
+
 
 * Payment Authorization through the creditAuth API using eProtect for the following payment methods:
     * Credit Card
