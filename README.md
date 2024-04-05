@@ -32,7 +32,7 @@ The below diagram shows an overview of the steps within the journey to create / 
 
 For full details of the connector:
 
-* [User Guide](./resources/docs/Worldpay RAFT User Guide.pdf)
+* [User Guide](https://github.com/Worldpay/Worldpay-CommerceTools-RAFT/blob/feature/initial-version/resources/docs/Worldpay%20RAFT%20User%20Guide.pdf)
 * [Technical Guide](./resources/docs/TechnicalDocumentation.md)
 * [Deployment Guide](./resources/docs/DeploymentGuide.md)
 
@@ -46,7 +46,7 @@ The connector is designed to be flexible and easy to customize. It consists of N
 
 The connector is designed to work with the following components:
 
-* [RAFT version 1.22](https://developerengine.fisglobal.com/apis/native-raft).
-* [eProtect v4](https://developerengine.fisglobal.com/apis/usecomm/eprotect).
-* The [commercetools API](https://docs.commercetools.com/docs/), which is not versioned and future releases are always backwards compatible.
+* [RAFT version 1.22](https://developerengine.fisglobal.com/apis/native-raft)
+* [eProtect v4](https://developerengine.fisglobal.com/apis/usecomm/eprotect)
+* The [commercetools API](https://docs.commercetools.com/docs/), which is not versioned and future releases are always backwards compatible
 
