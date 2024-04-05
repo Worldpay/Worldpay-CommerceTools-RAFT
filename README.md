@@ -1,22 +1,52 @@
-<p align="center">
-  <a href="https://commercetools.com/">
-    <img alt="commercetools logo" src="https://unpkg.com/@commercetools-frontend/assets/logos/commercetools_primary-logo_horizontal_RGB.png">
-  </a></br>
-  <b>Connect Application Starter in TypeScript</b>
-</p>
+![](Logo.png)
 
-This is the `starter-typescript` template to develop [connect applications](https://marketplace.commercetools.com/) in TypeScript.
+The worldpay-commercetools-RAFT-connector module provides integration between commercetools and Worldpay RAFT with support for the following payment use cases:
 
-## Instructions
+* Payment Authorization through the creditAuth API using eProtect for the following payment methods:
+    * Credit Card
+    * Google Pay
+    * Apple Pay
+    * PINLess Debit
+* Payment Cancellations (part and full) through the creditAuth API specifying reversal attributes.
+* Payment Completions (part and full) through the creditCompletion API.
+* Refunds (part and full) through the creditRefund API.
+* Gift Card Transactions through the Gift Card API:
+    * Gift Card Inquiry	
+    * Gift Card Pre Authorization
+    * Gift Card Pre Authorization Reversal
+    * Gift Card Completion
+    * Gift Card Refund
 
-Use `create-connect-app` cli with `starter-typescript` as `template` value to download this template repository to build the integration application , folder structure needs to be followed to ensure certification & deployment from commercetools connect team as stated [here](https://github.com/commercetools/connect-application-kit#readme) 
+In addition to the above use cases, the module source code repository provides:
 
-## Architecture principles for building an connect application 
+* Infrastructure-as-code (IaC) cloud deployment templates for easy provisioning into a client’s cloud infrastructure.
+* A suite of unit and integration test components.
 
-* Connector solution should be lightweight in nature
-* Connector solutions should follow test driven development. Unit , Integration (& E2E) tests should be included and successfully passed to be used
-* No hardcoding of customer related config. If needed, values in an environment file which should not be maintained in repository
-* Connector solution should be supported with detailed documentation
-* Connectors should be point to point in nature, currently doesnt support any persistence capabilities apart from in memory persistence
-* Connector solution should use open source technologies, although connector itself can be private for specific customer(s)
-* Code should not contain console.log statements, use [the included logger](https://github.com/commercetools/merchant-center-application-kit/tree/main/packages-backend/loggers#readme) instead.
+#### Integration Approach
+
+The integration approach leverages commercetools API Extensions to transform payment create / update API calls via the Worldpay RAFT Connector module between commercetools and Worldpay RAFT.
+
+The below diagram shows an overview of the steps within the journey to create / update a payment, whilst utilizing eProtect to reduce PCI liability. This will form the backbone of the infrastructure covered within this document.
+
+![](IntegrationApproach.png)
+
+For full details of the connector:
+
+* [User Guide](./resources/docs/Worldpay RAFT User Guide.pdf)
+* [Technical Guide](./resources/docs/TechnicalDocumentation.md)
+* [Deployment Guide](./resources/docs/DeploymentGuide.md)
+
+#### Extensibility
+
+The connector is designed to be flexible and easy to customize. It consists of Node.js applications that can be provisioned in your chosen public cloud, for example as serverless functions in AWS or Azure, or on any system using Docker containers.
+
+* [Technical Guide](./resources/docs/TechnicalDocumentation.md)
+
+#### Compatibility
+
+The connector is designed to work with the following components:
+
+* [RAFT version 1.22](https://developerengine.fisglobal.com/apis/native-raft).
+* [eProtect v4](https://developerengine.fisglobal.com/apis/usecomm/eprotect).
+* The [commercetools API](https://docs.commercetools.com/docs/), which is not versioned and future releases are always backwards compatible.
+
