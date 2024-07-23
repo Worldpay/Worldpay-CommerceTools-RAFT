@@ -5,9 +5,9 @@ ENV WORKING_DIR /app
 RUN mkdir -p ${WORKING_DIR}
 WORKDIR ${WORKING_DIR}
 ADD ../packages ./packages
-ADD ../worldpay-raft-connector ./worldpay-raft-connector
+ADD ../worldpay-raft-connect ./worldpay-raft-connect
 
-WORKDIR ${WORKING_DIR}/worldpay-raft-connector
+WORKDIR ${WORKING_DIR}/worldpay-raft-connect
 RUN npm install
 RUN npm run build
 

@@ -9,5 +9,4 @@ coverage
 **/*.docx
 .env
 **/tsconfig.tsbuildinfo
-package-lock.json
 **/*.tgz

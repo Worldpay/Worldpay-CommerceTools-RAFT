@@ -49,7 +49,7 @@ The following components are present in the connector:
     * Required fields need to be present
     * The format of fields need to meet the requirements (i.e. string length)
     * Patterns are checked as well (i.e. numerical, YY-DD date format, ...)
-* Package @gradientedge/worldpay-raft-connector (block 'Connector' in the diagram): this package contains the majority of the code for that connector, and is limited to the common parts of a connector that can be deployed in the cloud or commercetools connect.
+* Package @gradientedge/worldpay-raft-connect (block 'Connector' in the diagram): this package contains the majority of the code for that connector, and is limited to the common parts of a connector that can be deployed in the cloud or commercetools connect.
     * No cloud-vendor specific code is included here
     * No assumptions on the format of the incoming message are built-in
     * The configuration of this package is passed in via an `initialize` function, which takes an object with settings. The creation of this settings object is the responsible of the deployed application, and could use environment variables, AWS SecretManager, a configuration file or any other means.

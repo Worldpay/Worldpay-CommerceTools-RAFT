@@ -1,2169 +1,2168 @@
 {
-	"info": {
-		"_postman_id": "f8a4ef24-d6a0-47bb-816c-145d99d6d8cd",
-		"name": "commercetools Connect API",
-		"description": "# commercetools API Postman Collection\n\nThis Postman collection contains examples of requests and responses for most endpoints and commands of the\ncommercetools Connect API. For every command the smallest possible payload is given. Please find optional\nfields in the related official documentation. Additionally the collection provides example requests and\nresponses for specific tasks and more complex data models.\n\n## Disclaimer\n\nThis is not the official commercetools Connect API documentation. Please see [here](http://docs.commercetools.com/)\nfor a complete and approved documentation of the commercetools Connect API.\n\n## How to use\n\n**:warning: Be aware that postman automatically synchronizes environment variables (including your API client credentials) to your workspace if logged in.\nUse this collection only for development purposes and non-production projects.**\n\nTo use this collection in Postman please perform the following steps:\n\n1. Download and install the Postman Client\n2. Import the [collection.json](collection.json) and [template.json](template.json) in your postman application\n3. In the Merchant Center, create a new API Client and fill in the client credentials in your environment\n4. Obtain an access token by sending the \"Authorization/Obtain access token\" request at the bottom of the request list. Now you can use all other endpoints\n\nFeel free to clone and modify this collection to your needs.\n\nTo automate frequent tasks the collection automatically manages commonly required values and parameters such\nas resource ids, keys and versions in Postman environment variables for you.\n\nPlease see http://docs.commercetools.com/ for further information about the commercetools Plattform.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "9308725"
-	},
-	"item": [
-		{
-			"name": "Authorization",
-			"item": [
-				{
-					"name": "Obtain access token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"tests[\"Status code is 200\"] = responseCode.code === 200;",
-									"var data = JSON.parse(responseBody);",
-									"if(data.access_token){",
-									"    pm.environment.set(\"ctp_access_token\", data.access_token);",
-									"}",
-									"if (data.scope) {",
-									"    parts = data.scope.split(\" \");",
-									"    parts = parts.filter(scope => scope.includes(\":\")).map(scope => scope.split(\":\"))",
-									"    if (parts.length > 0) {",
-									"        scopeParts = parts[0];",
-									"        pm.environment.set(\"project-key\", scopeParts[1]);",
-									"        parts = parts.filter(scope => scope.length >= 3)",
-									"        if (parts.length > 0) {",
-									"            scopeParts = parts[0];",
-									"            pm.environment.set(\"store-key\", scopeParts[2]);",
-									"        }",
-									"    }",
-									"}"
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "{{client_id}}",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "{{client_secret}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{auth_url}}/oauth/token?grant_type=client_credentials",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"oauth",
-								"token"
-							],
-							"query": [
-								{
-									"key": "grant_type",
-									"value": "client_credentials"
-								}
-							]
-						},
-						"description": "Use this request to obtain an access token for your commercetools platform project via Client Credentials Flow. As a prerequisite you must have filled out environment variables in Postman for projectKey, client_id and client_secret to use this."
-					},
-					"response": []
-				},
-				{
-					"name": "Obtain access token through password flow",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"tests[\"Status code is 200\"] = responseCode.code === 200;",
-									"var data = JSON.parse(responseBody);",
-									"if(data.access_token){",
-									"    pm.environment.set(\"ctp_access_token\", data.access_token);",
-									"}",
-									"if (data.scope) {",
-									"    parts = data.scope.split(\" \");",
-									"    parts = parts.filter(scope => scope.includes(\":\")).map(scope => scope.split(\":\"))",
-									"    if (parts.length > 0) {",
-									"        scopeParts = parts[0];",
-									"        pm.environment.set(\"project-key\", scopeParts[1]);",
-									"        parts = parts.filter(scope => scope.length >= 3)",
-									"        if (parts.length > 0) {",
-									"            scopeParts = parts[0];",
-									"            pm.environment.set(\"store-key\", scopeParts[2]);",
-									"        }",
-									"    }",
-									"}"
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "{{client_id}}",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "{{client_secret}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{auth_url}}/oauth/{{project-key}}/customers/token?grant_type=password&username=&password=",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"oauth",
-								"{{project-key}}",
-								"customers",
-								"token"
-							],
-							"query": [
-								{
-									"key": "grant_type",
-									"value": "password"
-								},
-								{
-									"key": "username",
-									"value": ""
-								},
-								{
-									"key": "password",
-									"value": ""
-								}
-							]
-						},
-						"description": "Use this request to obtain an access token for your commercetools platform project via Password Flow. As a prerequisite you must have filled out environment variables in Postman for projectKey, client_id, client_secret, user_email and user_password to use this."
-					},
-					"response": []
-				},
-				{
-					"name": "Token for Anonymous Sessions",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"tests[\"Status code is 200\"] = responseCode.code === 200;",
-									"var data = JSON.parse(responseBody);",
-									"if(data.access_token){",
-									"    pm.environment.set(\"ctp_access_token\", data.access_token);",
-									"}",
-									"if (data.scope) {",
-									"    parts = data.scope.split(\" \");",
-									"    parts = parts.filter(scope => scope.includes(\":\")).map(scope => scope.split(\":\"))",
-									"    if (parts.length > 0) {",
-									"        scopeParts = parts[0];",
-									"        pm.environment.set(\"project-key\", scopeParts[1]);",
-									"        parts = parts.filter(scope => scope.length >= 3)",
-									"        if (parts.length > 0) {",
-									"            scopeParts = parts[0];",
-									"            pm.environment.set(\"store-key\", scopeParts[2]);",
-									"        }",
-									"    }",
-									"}"
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "{{client_id}}",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "{{client_secret}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{auth_url}}/oauth/{{project-key}}/anonymous/token?grant_type=client_credentials",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"oauth",
-								"{{project-key}}",
-								"anonymous",
-								"token"
-							],
-							"query": [
-								{
-									"key": "grant_type",
-									"value": "client_credentials"
-								}
-							]
-						},
-						"description": "Use this request to obtain an access token for a anonymous session. As a prerequisite you must have filled out environment variables in Postman for projectKey, client_id and client_secret to use this."
-					},
-					"response": []
-				},
-				{
-					"name": "Token Introspection",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"tests[\"Status code is 200\"] = responseCode.code === 200;"
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "{{client_id}}",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "{{client_secret}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{auth_url}}/oauth/introspect?token={{ctp_access_token}}",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"oauth",
-								"introspect"
-							],
-							"query": [
-								{
-									"key": "token",
-									"value": "{{ctp_access_token}}"
-								}
-							]
-						},
-						"description": "Token introspection allows to determine the active state of an OAuth 2.0 access token and to determine meta-information about this accces token, such as the `scope`."
-					},
-					"response": []
-				}
-			],
-			"description": "Authorization"
-		},
-		{
-			"name": "Project",
-			"item": [
-				{
-					"name": "Connectors",
-					"item": [
-						{
-							"name": "Drafts",
-							"item": [
-								{
-									"name": "Get ConnectorDraft by id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-													"var data = JSON.parse(responseBody);",
-													"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-													"    pm.environment.set(\"draft-id\", data.results[0].id); ",
-													"    pm.environment.set(\"draft-version\", data.results[0].version);",
-													"}",
-													"if(data.results && data.results[0] && data.results[0].key){",
-													"    pm.environment.set(\"draft-key\", data.results[0].key); ",
-													"}",
-													"if(data.version){",
-													"    pm.environment.set(\"draft-version\", data.version);",
-													"}",
-													"if(data.id){",
-													"    pm.environment.set(\"draft-id\", data.id); ",
-													"}",
-													"if(data.key){",
-													"    pm.environment.set(\"draft-key\", data.key);",
-													"}",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "oauth2",
-											"oauth2": [
-												{
-													"key": "accessToken",
-													"value": "{{ctp_access_token}}",
-													"type": "string"
-												},
-												{
-													"key": "addTokenTo",
-													"value": "header",
-													"type": "string"
-												},
-												{
-													"key": "tokenType",
-													"value": "Bearer",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
-										"url": {
-											"raw": "{{connect_host}}/connectors/drafts/{{draft-id}}",
-											"host": [
-												"{{connect_host}}"
-											],
-											"path": [
-												"connectors",
-												"drafts",
-												"{{draft-id}}"
-											]
-										},
-										"description": "null"
-									},
-									"response": []
-								},
-								{
-									"name": "Update ConnectorDraft by id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-													"var data = JSON.parse(responseBody);",
-													"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-													"    pm.environment.set(\"draft-id\", data.results[0].id); ",
-													"    pm.environment.set(\"draft-version\", data.results[0].version);",
-													"}",
-													"if(data.results && data.results[0] && data.results[0].key){",
-													"    pm.environment.set(\"draft-key\", data.results[0].key); ",
-													"}",
-													"if(data.version){",
-													"    pm.environment.set(\"draft-version\", data.version);",
-													"}",
-													"if(data.id){",
-													"    pm.environment.set(\"draft-id\", data.id); ",
-													"}",
-													"if(data.key){",
-													"    pm.environment.set(\"draft-key\", data.key);",
-													"}",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"auth": {
-											"type": "oauth2",
-											"oauth2": [
-												{
-													"key": "accessToken",
-													"value": "{{ctp_access_token}}",
-													"type": "string"
-												},
-												{
-													"key": "addTokenTo",
-													"value": "header",
-													"type": "string"
-												},
-												{
-													"key": "tokenType",
-													"value": "Bearer",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"version\" : 1,\n  \"actions\" : [ {\n    \"action\" : \"setName\",\n    \"name\" : \"Connector Name\"\n  } ]\n}"
-										},
-										"url": {
-											"raw": "{{connect_host}}/connectors/drafts/{{draft-id}}",
-											"host": [
-												"{{connect_host}}"
-											],
-											"path": [
-												"connectors",
-												"drafts",
-												"{{draft-id}}"
-											]
-										},
-										"description": "null"
-									},
-									"response": []
-								},
-								{
-									"name": "Get ConnectorDraft by key",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-													"var data = JSON.parse(responseBody);",
-													"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-													"    pm.environment.set(\"draft-id\", data.results[0].id); ",
-													"    pm.environment.set(\"draft-version\", data.results[0].version);",
-													"}",
-													"if(data.results && data.results[0] && data.results[0].key){",
-													"    pm.environment.set(\"draft-key\", data.results[0].key); ",
-													"}",
-													"if(data.version){",
-													"    pm.environment.set(\"draft-version\", data.version);",
-													"}",
-													"if(data.id){",
-													"    pm.environment.set(\"draft-id\", data.id); ",
-													"}",
-													"if(data.key){",
-													"    pm.environment.set(\"draft-key\", data.key);",
-													"}",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "oauth2",
-											"oauth2": [
-												{
-													"key": "accessToken",
-													"value": "{{ctp_access_token}}",
-													"type": "string"
-												},
-												{
-													"key": "addTokenTo",
-													"value": "header",
-													"type": "string"
-												},
-												{
-													"key": "tokenType",
-													"value": "Bearer",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
-										"url": {
-											"raw": "{{connect_host}}/connectors/drafts/key={{draft-key}}",
-											"host": [
-												"{{connect_host}}"
-											],
-											"path": [
-												"connectors",
-												"drafts",
-												"key={{draft-key}}"
-											]
-										},
-										"description": "null"
-									},
-									"response": []
-								},
-								{
-									"name": "Update ConnectorDraft by key",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-													"var data = JSON.parse(responseBody);",
-													"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-													"    pm.environment.set(\"draft-id\", data.results[0].id); ",
-													"    pm.environment.set(\"draft-version\", data.results[0].version);",
-													"}",
-													"if(data.results && data.results[0] && data.results[0].key){",
-													"    pm.environment.set(\"draft-key\", data.results[0].key); ",
-													"}",
-													"if(data.version){",
-													"    pm.environment.set(\"draft-version\", data.version);",
-													"}",
-													"if(data.id){",
-													"    pm.environment.set(\"draft-id\", data.id); ",
-													"}",
-													"if(data.key){",
-													"    pm.environment.set(\"draft-key\", data.key);",
-													"}",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"auth": {
-											"type": "oauth2",
-											"oauth2": [
-												{
-													"key": "accessToken",
-													"value": "{{ctp_access_token}}",
-													"type": "string"
-												},
-												{
-													"key": "addTokenTo",
-													"value": "header",
-													"type": "string"
-												},
-												{
-													"key": "tokenType",
-													"value": "Bearer",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"version\": 215,\n    \"actions\": [\n        {\n            \"action\": \"setRepository\",\n            \"url\": \"git@github.com:gradientedge/commercetools-connect-poc.git\",\n            \"tag\": \"0.28.0\"\n        }\n    ]\n}"
-										},
-										"url": {
-											"raw": "{{connect_host}}/connectors/drafts/key={{draft-key}}",
-											"host": [
-												"{{connect_host}}"
-											],
-											"path": [
-												"connectors",
-												"drafts",
-												"key={{draft-key}}"
-											]
-										},
-										"description": "null"
-									},
-									"response": []
-								},
-								{
-									"name": "Publish Connector Draft",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-													"var data = JSON.parse(responseBody);",
-													"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-													"    pm.environment.set(\"draft-id\", data.results[0].id); ",
-													"    pm.environment.set(\"draft-version\", data.results[0].version);",
-													"}",
-													"if(data.results && data.results[0] && data.results[0].key){",
-													"    pm.environment.set(\"draft-key\", data.results[0].key); ",
-													"}",
-													"if(data.version){",
-													"    pm.environment.set(\"draft-version\", data.version);",
-													"}",
-													"if(data.id){",
-													"    pm.environment.set(\"draft-id\", data.id); ",
-													"}",
-													"if(data.key){",
-													"    pm.environment.set(\"draft-key\", data.key);",
-													"}",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"auth": {
-											"type": "oauth2",
-											"oauth2": [
-												{
-													"key": "accessToken",
-													"value": "{{ctp_access_token}}",
-													"type": "string"
-												},
-												{
-													"key": "addTokenTo",
-													"value": "header",
-													"type": "string"
-												},
-												{
-													"key": "tokenType",
-													"value": "Bearer",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"version\": 221,\n    \"actions\": [\n        {\n            \"action\": \"publish\",\n            \"certification\": false\n        }\n    ]\n}"
-										},
-										"url": {
-											"raw": "{{connect_host}}/connectors/drafts/key={{draft-key}}",
-											"host": [
-												"{{connect_host}}"
-											],
-											"path": [
-												"connectors",
-												"drafts",
-												"key={{draft-key}}"
-											]
-										},
-										"description": "null"
-									},
-									"response": []
-								},
-								{
-									"name": "Unlist Connector",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-													"var data = JSON.parse(responseBody);",
-													"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-													"    pm.environment.set(\"draft-id\", data.results[0].id); ",
-													"    pm.environment.set(\"draft-version\", data.results[0].version);",
-													"}",
-													"if(data.results && data.results[0] && data.results[0].key){",
-													"    pm.environment.set(\"draft-key\", data.results[0].key); ",
-													"}",
-													"if(data.version){",
-													"    pm.environment.set(\"draft-version\", data.version);",
-													"}",
-													"if(data.id){",
-													"    pm.environment.set(\"draft-id\", data.id); ",
-													"}",
-													"if(data.key){",
-													"    pm.environment.set(\"draft-key\", data.key);",
-													"}",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"auth": {
-											"type": "oauth2",
-											"oauth2": [
-												{
-													"key": "accessToken",
-													"value": "{{ctp_access_token}}",
-													"type": "string"
-												},
-												{
-													"key": "addTokenTo",
-													"value": "header",
-													"type": "string"
-												},
-												{
-													"key": "tokenType",
-													"value": "Bearer",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"version\" : 220,\n  \"actions\" : [ {\n    \"action\" : \"unlist\"\n  } ]\n}"
-										},
-										"url": {
-											"raw": "{{connect_host}}/connectors/drafts/key={{draft-key}}",
-											"host": [
-												"{{connect_host}}"
-											],
-											"path": [
-												"connectors",
-												"drafts",
-												"key={{draft-key}}"
-											]
-										},
-										"description": "null"
-									},
-									"response": []
-								},
-								{
-									"name": "Create ConnectorDraft",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-													"var data = JSON.parse(responseBody);",
-													"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-													"    pm.environment.set(\"draft-id\", data.results[0].id); ",
-													"    pm.environment.set(\"draft-version\", data.results[0].version);",
-													"}",
-													"if(data.results && data.results[0] && data.results[0].key){",
-													"    pm.environment.set(\"draft-key\", data.results[0].key); ",
-													"}",
-													"if(data.version){",
-													"    pm.environment.set(\"draft-version\", data.version);",
-													"}",
-													"if(data.id){",
-													"    pm.environment.set(\"draft-id\", data.id); ",
-													"}",
-													"if(data.key){",
-													"    pm.environment.set(\"draft-key\", data.key);",
-													"}",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"auth": {
-											"type": "oauth2",
-											"oauth2": [
-												{
-													"key": "accessToken",
-													"value": "{{ctp_access_token}}",
-													"type": "string"
-												},
-												{
-													"key": "addTokenTo",
-													"value": "header",
-													"type": "string"
-												},
-												{
-													"key": "tokenType",
-													"value": "Bearer",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"key\": \"gradientedge-worldpay-raft\",\n    \"name\": \"Gradient Edge Worldpay RAFT connector\",\n    \"description\": \"A commercetools connector for Worldpay RAFT payments\",\n    \"creator\": {\n        \"title\": \"Gradient Edge\",\n        \"name\": \"Gradient Edge\",\n        \"email\": \"support@gradientedge.com\",\n        \"company\": \"Gradient Edge\",\n        \"noOfContributors\": 5\n    },\n    \"repository\": {\n        \"url\": \"git@github.com:gradientedge/commercetools-connect-poc.git\",\n        \"tag\": \"0.28.0\"\n    },\n    \"privateProjects\": [\"ge-sandbox-worldpay-integration\"],\n    \"supportedRegions\": [\"europe-west1.gcp\"]\n}"
-										},
-										"url": {
-											"raw": "{{connect_host}}/connectors/drafts",
-											"host": [
-												"{{connect_host}}"
-											],
-											"path": [
-												"connectors",
-												"drafts"
-											]
-										},
-										"description": "null"
-									},
-									"response": []
-								},
-								{
-									"name": "Query drafts",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-													"var data = JSON.parse(responseBody);",
-													"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-													"    pm.environment.set(\"draft-id\", data.results[0].id); ",
-													"    pm.environment.set(\"draft-version\", data.results[0].version);",
-													"}",
-													"if(data.results && data.results[0] && data.results[0].key){",
-													"    pm.environment.set(\"draft-key\", data.results[0].key); ",
-													"}",
-													"if(data.version){",
-													"    pm.environment.set(\"draft-version\", data.version);",
-													"}",
-													"if(data.id){",
-													"    pm.environment.set(\"draft-id\", data.id); ",
-													"}",
-													"if(data.key){",
-													"    pm.environment.set(\"draft-key\", data.key);",
-													"}",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "oauth2",
-											"oauth2": [
-												{
-													"key": "accessToken",
-													"value": "{{ctp_access_token}}",
-													"type": "string"
-												},
-												{
-													"key": "addTokenTo",
-													"value": "header",
-													"type": "string"
-												},
-												{
-													"key": "tokenType",
-													"value": "Bearer",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
-										"url": {
-											"raw": "{{connect_host}}/connectors/drafts",
-											"host": [
-												"{{connect_host}}"
-											],
-											"path": [
-												"connectors",
-												"drafts"
-											],
-											"query": [
-												{
-													"key": "limit",
-													"value": "",
-													"disabled": true
-												},
-												{
-													"key": "offset",
-													"value": "",
-													"disabled": true
-												},
-												{
-													"key": "sort",
-													"value": "",
-													"disabled": true
-												}
-											]
-										},
-										"description": "null"
-									},
-									"response": []
-								}
-							],
-							"description": "null"
-						},
-						{
-							"name": "Get Connector by id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"connector-id\", data.results[0].id); ",
-											"    pm.environment.set(\"connector-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"connector-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"connector-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"connector-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"connector-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{connect_host}}/connectors/{{connector-id}}",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"connectors",
-										"{{connector-id}}"
-									]
-								},
-								"description": "null"
-							},
-							"response": []
-						},
-						{
-							"name": "Get Connector by key",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"connector-id\", data.results[0].id); ",
-											"    pm.environment.set(\"connector-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"connector-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"connector-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"connector-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"connector-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{connect_host}}/connectors/key={{connector-key}}",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"connectors",
-										"key={{connector-key}}"
-									]
-								},
-								"description": "null"
-							},
-							"response": []
-						},
-						{
-							"name": "Search Connectors",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"search-id\", data.results[0].id); ",
-											"    pm.environment.set(\"search-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"search-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"search-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"search-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"search-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{connect_host}}/connectors/search",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"connectors",
-										"search"
-									],
-									"query": [
-										{
-											"key": "text",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "limit",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "offset",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "sort",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "private",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "creator.company",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "id",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "key",
-											"value": "",
-											"disabled": true
-										}
-									]
-								},
-								"description": "Retrieves all available Connectors."
-							},
-							"response": []
-						}
-					],
-					"description": "null"
-				},
-				{
-					"name": "Deployments",
-					"item": [
-						{
-							"name": "Query logs from Deployment by id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"log-id\", data.results[0].id); ",
-											"    pm.environment.set(\"log-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"log-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"log-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"log-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"log-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{connect_host}}/{{project-key}}/deployments/{{deployment-id}}/logs",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"{{project-key}}",
-										"deployments",
-										"{{deployment-id}}",
-										"logs"
-									],
-									"query": [
-										{
-											"key": "pageToken",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "applicationName",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "startDate",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "endDate",
-											"value": "",
-											"disabled": true
-										}
-									]
-								},
-								"description": "Retrieves logs for the given deployment."
-							},
-							"response": []
-						},
-						{
-							"name": "Get Deployment by id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"deployment-id\", data.results[0].id); ",
-											"    pm.environment.set(\"deployment-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"deployment-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"deployment-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"deployment-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"deployment-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{connect_host}}/{{project-key}}/deployments/{{deployment-id}}",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"{{project-key}}",
-										"deployments",
-										"{{deployment-id}}"
-									]
-								},
-								"description": "null"
-							},
-							"response": []
-						},
-						{
-							"name": "Update Deployment by id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"deployment-id\", data.results[0].id); ",
-											"    pm.environment.set(\"deployment-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"deployment-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"deployment-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"deployment-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"deployment-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"version\" : 1,\n  \"actions\" : [ {\n    \"action\" : \"redeploy\",\n    \"configurationValues\" : [ {\n      \"applicationName\" : \"app-1\",\n      \"standardConfiguration\" : [ {\n        \"key\" : \"CONFIG_KEY\",\n        \"value\" : \"config-key-value\"\n      } ],\n      \"securedConfiguration\" : [ {\n        \"key\" : \"CONFIG_SECRET_KEY\",\n        \"value\" : \"config-secret-key-value\"\n      } ]\n    } ]\n  } ]\n}"
-								},
-								"url": {
-									"raw": "{{connect_host}}/{{project-key}}/deployments/{{deployment-id}}",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"{{project-key}}",
-										"deployments",
-										"{{deployment-id}}"
-									]
-								},
-								"description": "null"
-							},
-							"response": []
-						},
-						{
-							"name": "Delete Deployment  by id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"deployment-id\", data.results[0].id); ",
-											"    pm.environment.set(\"deployment-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"deployment-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"deployment-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"deployment-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"deployment-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{connect_host}}/{{project-key}}/deployments/{{deployment-id}}",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"{{project-key}}",
-										"deployments",
-										"{{deployment-id}}"
-									]
-								},
-								"description": "null"
-							},
-							"response": []
-						},
-						{
-							"name": "Query logs from Deployment by key",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"log-id\", data.results[0].id); ",
-											"    pm.environment.set(\"log-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"log-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"log-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"log-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"log-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{connect_host}}/{{project-key}}/deployments/key={{deployment-key}}/logs",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"{{project-key}}",
-										"deployments",
-										"key={{deployment-key}}",
-										"logs"
-									],
-									"query": [
-										{
-											"key": "pageToken",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "applicationName",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "startDate",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "endDate",
-											"value": "",
-											"disabled": true
-										}
-									]
-								},
-								"description": "Retrieves logs for the given deployment."
-							},
-							"response": []
-						},
-						{
-							"name": "Get Deployment by key",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"deployment-id\", data.results[0].id); ",
-											"    pm.environment.set(\"deployment-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"deployment-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"deployment-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"deployment-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"deployment-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{connect_host}}/{{project-key}}/deployments/key={{deployment-key}}",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"{{project-key}}",
-										"deployments",
-										"key={{deployment-key}}"
-									]
-								},
-								"description": "null"
-							},
-							"response": []
-						},
-						{
-							"name": "Update Deployment by key",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"deployment-id\", data.results[0].id); ",
-											"    pm.environment.set(\"deployment-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"deployment-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"deployment-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"deployment-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"deployment-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"version\" : 1,\n  \"actions\" : [ {\n    \"action\" : \"redeploy\",\n    \"configurationValues\" : [ {\n      \"applicationName\" : \"app-1\",\n      \"standardConfiguration\" : [ {\n        \"key\" : \"CONFIG_KEY\",\n        \"value\" : \"config-key-value\"\n      } ],\n      \"securedConfiguration\" : [ {\n        \"key\" : \"CONFIG_SECRET_KEY\",\n        \"value\" : \"config-secret-key-value\"\n      } ]\n    } ]\n  } ]\n}"
-								},
-								"url": {
-									"raw": "{{connect_host}}/{{project-key}}/deployments/key={{deployment-key}}",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"{{project-key}}",
-										"deployments",
-										"key={{deployment-key}}"
-									]
-								},
-								"description": "null"
-							},
-							"response": []
-						},
-						{
-							"name": "Delete Deployment  by key",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"deployment-id\", data.results[0].id); ",
-											"    pm.environment.set(\"deployment-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"deployment-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"deployment-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"deployment-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"deployment-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{connect_host}}/{{project-key}}/deployments/key={{deployment-key}}",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"{{project-key}}",
-										"deployments",
-										"key={{deployment-key}}"
-									]
-								},
-								"description": "null"
-							},
-							"response": []
-						},
-						{
-							"name": "Create Deployment",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"deployment-id\", data.results[0].id); ",
-											"    pm.environment.set(\"deployment-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"deployment-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"deployment-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"deployment-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"deployment-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"key\": \"gradientedge-worldpay-raft-deployment\",\n    \"connector\": {\n        \"id\": \"88042344-fc2e-4493-9ac7-bba94756ed1f\",\n        \"version\": 225\n    },\n    \"region\": \"{{region}}\",\n    \"configurations\": [\n        {\n            \"applicationName\": \"worldpay-raft-connector\",\n            \"standardConfiguration\": [\n                {\n                    \"key\": \"CTP_REGION\",\n                    \"value\": \"{{region}}\"\n                }\n            ],\n            \"securedConfiguration\": [\n                {\n                    \"key\": \"CTP_PROJECT_KEY\",\n                    \"value\": \"{{project-key}}\"\n                },\n                {\n                    \"key\": \"CTP_CLIENT_ID\",\n                    \"value\": \"{{client_id}}\"\n                },\n                {\n                    \"key\": \"CTP_CLIENT_SECRET\",\n                    \"value\": \"{{client_secret}}\"\n                },\n                {\n                    \"key\": \"CTP_SCOPES\",\n                    \"value\": \"manage_project:{{project-key}} manage_api_clients:{{project-key}} view_api_clients:{{project-key}}\"\n                },\n                {\n                    \"key\": \"CONNECTOR_SECRET\",\n                    \"value\": \"{{connector_secret}}\"\n                }\n            ]\n        }\n    ]\n}"
-								},
-								"url": {
-									"raw": "{{connect_host}}/{{project-key}}/deployments",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"{{project-key}}",
-										"deployments"
-									]
-								},
-								"description": "Specific Error Codes:\n- [ConnectorStagedNotPreviewable](ctp:connect:type:ConnectorStagedNotPreviewableError)\n- [DeploymentUnsupportedRegion](ctp:connect:type:DeploymentUnsupportedRegionError)\n- [DeploymentUnknownApplicationConfiguration](ctp:connect:type:DeploymentUnknownApplicationConfigurationError)\n- [DeploymentUnknownApplicationConfigurationKey](ctp:connect:type:DeploymentUnknownApplicationConfigurationKeyError)\n"
-							},
-							"response": []
-						},
-						{
-							"name": "Query deployments",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
-											"var data = JSON.parse(responseBody);",
-											"if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
-											"    pm.environment.set(\"deployment-id\", data.results[0].id); ",
-											"    pm.environment.set(\"deployment-version\", data.results[0].version);",
-											"}",
-											"if(data.results && data.results[0] && data.results[0].key){",
-											"    pm.environment.set(\"deployment-key\", data.results[0].key); ",
-											"}",
-											"if(data.version){",
-											"    pm.environment.set(\"deployment-version\", data.version);",
-											"}",
-											"if(data.id){",
-											"    pm.environment.set(\"deployment-id\", data.id); ",
-											"}",
-											"if(data.key){",
-											"    pm.environment.set(\"deployment-key\", data.key);",
-											"}",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "accessToken",
-											"value": "{{ctp_access_token}}",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "tokenType",
-											"value": "Bearer",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{connect_host}}/{{project-key}}/deployments",
-									"host": [
-										"{{connect_host}}"
-									],
-									"path": [
-										"{{project-key}}",
-										"deployments"
-									],
-									"query": [
-										{
-											"key": "limit",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "offset",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "sort",
-											"value": "",
-											"disabled": true
-										}
-									]
-								},
-								"description": "Retrieves all deployments of a project key."
-							},
-							"response": []
-						}
-					],
-					"description": "null"
-				}
-			],
-			"description": "The Project endpoint is used to retrieve certain information from a project."
-		}
-	],
-	"auth": {
-		"type": "oauth2",
-		"oauth2": [
-			{
-				"key": "accessToken",
-				"value": "{{ctp_access_token}}",
-				"type": "string"
-			},
-			{
-				"key": "addTokenTo",
-				"value": "header",
-				"type": "string"
-			},
-			{
-				"key": "tokenType",
-				"value": "Bearer",
-				"type": "string"
-			}
-		]
-	},
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "host",
-			"value": "{{connect_host}}",
-			"type": "string"
-		}
-	]
+  "info": {
+    "_postman_id": "f8a4ef24-d6a0-47bb-816c-145d99d6d8cd",
+    "name": "commercetools Connect API",
+    "description": "# commercetools API Postman Collection\n\nThis Postman collection contains examples of requests and responses for most endpoints and commands of the\ncommercetools Connect API. For every command the smallest possible payload is given. Please find optional\nfields in the related official documentation. Additionally the collection provides example requests and\nresponses for specific tasks and more complex data models.\n\n## Disclaimer\n\nThis is not the official commercetools Connect API documentation. Please see [here](http://docs.commercetools.com/)\nfor a complete and approved documentation of the commercetools Connect API.\n\n## How to use\n\n**:warning: Be aware that postman automatically synchronizes environment variables (including your API client credentials) to your workspace if logged in.\nUse this collection only for development purposes and non-production projects.**\n\nTo use this collection in Postman please perform the following steps:\n\n1. Download and install the Postman Client\n2. Import the [collection.json](collection.json) and [template.json](template.json) in your postman application\n3. In the Merchant Center, create a new API Client and fill in the client credentials in your environment\n4. Obtain an access token by sending the \"Authorization/Obtain access token\" request at the bottom of the request list. Now you can use all other endpoints\n\nFeel free to clone and modify this collection to your needs.\n\nTo automate frequent tasks the collection automatically manages commonly required values and parameters such\nas resource ids, keys and versions in Postman environment variables for you.\n\nPlease see http://docs.commercetools.com/ for further information about the commercetools Plattform.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "9308725"
+  },
+  "item": [
+    {
+      "name": "Authorization",
+      "item": [
+        {
+          "name": "Obtain access token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "tests[\"Status code is 200\"] = responseCode.code === 200;",
+                  "var data = JSON.parse(responseBody);",
+                  "if(data.access_token){",
+                  "    pm.environment.set(\"ctp_access_token\", data.access_token);",
+                  "}",
+                  "if (data.scope) {",
+                  "    parts = data.scope.split(\" \");",
+                  "    parts = parts.filter(scope => scope.includes(\":\")).map(scope => scope.split(\":\"))",
+                  "    if (parts.length > 0) {",
+                  "        scopeParts = parts[0];",
+                  "        pm.environment.set(\"project-key\", scopeParts[1]);",
+                  "        parts = parts.filter(scope => scope.length >= 3)",
+                  "        if (parts.length > 0) {",
+                  "            scopeParts = parts[0];",
+                  "            pm.environment.set(\"store-key\", scopeParts[2]);",
+                  "        }",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{client_id}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{client_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{auth_url}}/oauth/token?grant_type=client_credentials",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "oauth",
+                "token"
+              ],
+              "query": [
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "description": "Use this request to obtain an access token for your commercetools platform project via Client Credentials Flow. As a prerequisite you must have filled out environment variables in Postman for projectKey, client_id and client_secret to use this."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtain access token through password flow",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "tests[\"Status code is 200\"] = responseCode.code === 200;",
+                  "var data = JSON.parse(responseBody);",
+                  "if(data.access_token){",
+                  "    pm.environment.set(\"ctp_access_token\", data.access_token);",
+                  "}",
+                  "if (data.scope) {",
+                  "    parts = data.scope.split(\" \");",
+                  "    parts = parts.filter(scope => scope.includes(\":\")).map(scope => scope.split(\":\"))",
+                  "    if (parts.length > 0) {",
+                  "        scopeParts = parts[0];",
+                  "        pm.environment.set(\"project-key\", scopeParts[1]);",
+                  "        parts = parts.filter(scope => scope.length >= 3)",
+                  "        if (parts.length > 0) {",
+                  "            scopeParts = parts[0];",
+                  "            pm.environment.set(\"store-key\", scopeParts[2]);",
+                  "        }",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{client_id}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{client_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{auth_url}}/oauth/{{project-key}}/customers/token?grant_type=password&username=&password=",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "oauth",
+                "{{project-key}}",
+                "customers",
+                "token"
+              ],
+              "query": [
+                {
+                  "key": "grant_type",
+                  "value": "password"
+                },
+                {
+                  "key": "username",
+                  "value": ""
+                },
+                {
+                  "key": "password",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Use this request to obtain an access token for your commercetools platform project via Password Flow. As a prerequisite you must have filled out environment variables in Postman for projectKey, client_id, client_secret, user_email and user_password to use this."
+          },
+          "response": []
+        },
+        {
+          "name": "Token for Anonymous Sessions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "tests[\"Status code is 200\"] = responseCode.code === 200;",
+                  "var data = JSON.parse(responseBody);",
+                  "if(data.access_token){",
+                  "    pm.environment.set(\"ctp_access_token\", data.access_token);",
+                  "}",
+                  "if (data.scope) {",
+                  "    parts = data.scope.split(\" \");",
+                  "    parts = parts.filter(scope => scope.includes(\":\")).map(scope => scope.split(\":\"))",
+                  "    if (parts.length > 0) {",
+                  "        scopeParts = parts[0];",
+                  "        pm.environment.set(\"project-key\", scopeParts[1]);",
+                  "        parts = parts.filter(scope => scope.length >= 3)",
+                  "        if (parts.length > 0) {",
+                  "            scopeParts = parts[0];",
+                  "            pm.environment.set(\"store-key\", scopeParts[2]);",
+                  "        }",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{client_id}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{client_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{auth_url}}/oauth/{{project-key}}/anonymous/token?grant_type=client_credentials",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "oauth",
+                "{{project-key}}",
+                "anonymous",
+                "token"
+              ],
+              "query": [
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "description": "Use this request to obtain an access token for a anonymous session. As a prerequisite you must have filled out environment variables in Postman for projectKey, client_id and client_secret to use this."
+          },
+          "response": []
+        },
+        {
+          "name": "Token Introspection",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "tests[\"Status code is 200\"] = responseCode.code === 200;"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{client_id}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{client_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{auth_url}}/oauth/introspect?token={{ctp_access_token}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "oauth",
+                "introspect"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "{{ctp_access_token}}"
+                }
+              ]
+            },
+            "description": "Token introspection allows to determine the active state of an OAuth 2.0 access token and to determine meta-information about this accces token, such as the `scope`."
+          },
+          "response": []
+        }
+      ],
+      "description": "Authorization"
+    },
+    {
+      "name": "Project",
+      "item": [
+        {
+          "name": "Deployments",
+          "item": [
+            {
+              "name": "Query logs from Deployment by id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"log-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"log-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"log-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"log-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"log-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"log-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{connect_host}}/{{project-key}}/deployments/{{deployment-id}}/logs",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "{{project-key}}",
+                    "deployments",
+                    "{{deployment-id}}",
+                    "logs"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageToken",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "applicationName",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Retrieves logs for the given deployment."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Deployment by id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"deployment-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"deployment-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"deployment-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"deployment-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"deployment-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"deployment-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{connect_host}}/{{project-key}}/deployments/{{deployment-id}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "{{project-key}}",
+                    "deployments",
+                    "{{deployment-id}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Deployment by id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"deployment-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"deployment-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"deployment-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"deployment-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"deployment-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"deployment-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"version\" : 1,\n  \"actions\" : [ {\n    \"action\" : \"redeploy\",\n    \"configurationValues\" : [ {\n      \"applicationName\" : \"app-1\",\n      \"standardConfiguration\" : [ {\n        \"key\" : \"CONFIG_KEY\",\n        \"value\" : \"config-key-value\"\n      } ],\n      \"securedConfiguration\" : [ {\n        \"key\" : \"CONFIG_SECRET_KEY\",\n        \"value\" : \"config-secret-key-value\"\n      } ]\n    } ]\n  } ]\n}"
+                },
+                "url": {
+                  "raw": "{{connect_host}}/{{project-key}}/deployments/{{deployment-id}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "{{project-key}}",
+                    "deployments",
+                    "{{deployment-id}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Deployment  by id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"deployment-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"deployment-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"deployment-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"deployment-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"deployment-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"deployment-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{connect_host}}/{{project-key}}/deployments/{{deployment-id}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "{{project-key}}",
+                    "deployments",
+                    "{{deployment-id}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Query logs from Deployment by key",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"log-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"log-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"log-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"log-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"log-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"log-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{connect_host}}/{{project-key}}/deployments/key={{deployment-key}}/logs",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "{{project-key}}",
+                    "deployments",
+                    "key={{deployment-key}}",
+                    "logs"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageToken",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "applicationName",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Retrieves logs for the given deployment."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Deployment by key",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"deployment-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"deployment-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"deployment-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"deployment-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"deployment-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"deployment-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{connect_host}}/{{project-key}}/deployments/key={{deployment-key}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "{{project-key}}",
+                    "deployments",
+                    "key={{deployment-key}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Deployment by key",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"deployment-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"deployment-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"deployment-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"deployment-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"deployment-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"deployment-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"version\" : 1,\n  \"actions\" : [ {\n    \"action\" : \"redeploy\",\n    \"configurationValues\" : [ {\n      \"applicationName\" : \"app-1\",\n      \"standardConfiguration\" : [ {\n        \"key\" : \"CONFIG_KEY\",\n        \"value\" : \"config-key-value\"\n      } ],\n      \"securedConfiguration\" : [ {\n        \"key\" : \"CONFIG_SECRET_KEY\",\n        \"value\" : \"config-secret-key-value\"\n      } ]\n    } ]\n  } ]\n}"
+                },
+                "url": {
+                  "raw": "{{connect_host}}/{{project-key}}/deployments/key={{deployment-key}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "{{project-key}}",
+                    "deployments",
+                    "key={{deployment-key}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Deployment  by key",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"deployment-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"deployment-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"deployment-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"deployment-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"deployment-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"deployment-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{connect_host}}/{{project-key}}/deployments/key={{deployment-key}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "{{project-key}}",
+                    "deployments",
+                    "key={{deployment-key}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Create Deployment",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"deployment-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"deployment-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"deployment-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"deployment-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"deployment-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"deployment-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"key\": \"worldpay-raft-deployment\",\n    \"connector\": {\n        \"id\": \"88042344-fc2e-4493-9ac7-bba94756ed1f\",\n        \"version\": 225\n    },\n    \"region\": \"europe-west1.gcp\",\n    \"configurations\": [\n        {\n            \"applicationName\": \"worldpay-raft-connector\",\n            \"standardConfiguration\": [\n                {\n                    \"key\": \"CTP_REGION\",\n                    \"value\": \"europe-west1.gcp\"\n                }\n            ],\n            \"securedConfiguration\": [\n                {\n                    \"key\": \"CTP_PROJECT_KEY\",\n                    \"value\": \"ge-sandbox-worldpay-integration\"\n                },\n                {\n                    \"key\": \"CTP_CLIENT_ID\",\n                    \"value\": \"I_WZCQByaAgMWkxEQ1v3dazU\"\n                },\n                {\n                    \"key\": \"CTP_CLIENT_SECRET\",\n                    \"value\": \"nAqpvfXbIJ2h8Ria0Kzg3mvgp4npoHjo\"\n                },\n                {\n                    \"key\": \"CTP_SCOPES\",\n                    \"value\": \"manage_project:ge-sandbox-worldpay-integration manage_api_clients:ge-sandbox-worldpay-integration view_api_clients:ge-sandbox-worldpay-integration\"\n                },\n                {\n                    \"key\": \"CONNECTOR_SECRET\",\n                    \"value\": \"khs-7NjRUef3HbsD9Ec4wdzg.Kp_xY\"\n                }\n            ]\n        }\n    ]\n}"
+                },
+                "url": {
+                  "raw": "{{connect_host}}/{{project-key}}/deployments",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "{{project-key}}",
+                    "deployments"
+                  ]
+                },
+                "description": "Specific Error Codes:\n- [ConnectorStagedNotPreviewable](ctp:connect:type:ConnectorStagedNotPreviewableError)\n- [DeploymentUnsupportedRegion](ctp:connect:type:DeploymentUnsupportedRegionError)\n- [DeploymentUnknownApplicationConfiguration](ctp:connect:type:DeploymentUnknownApplicationConfigurationError)\n- [DeploymentUnknownApplicationConfigurationKey](ctp:connect:type:DeploymentUnknownApplicationConfigurationKeyError)\n"
+              },
+              "response": []
+            },
+            {
+              "name": "Query deployments",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"deployment-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"deployment-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"deployment-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"deployment-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"deployment-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"deployment-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{connect_host}}/{{project-key}}/deployments",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "{{project-key}}",
+                    "deployments"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "offset",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "sort",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Retrieves all deployments of a project key."
+              },
+              "response": []
+            }
+          ],
+          "description": "null"
+        }
+      ],
+      "description": "The Project endpoint is used to retrieve certain information from a project."
+    },
+    {
+      "name": "Connectors",
+      "item": [
+        {
+          "name": "Drafts",
+          "item": [
+            {
+              "name": "Get ConnectorDraft by id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"draft-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"draft-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"draft-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"draft-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"draft-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"draft-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{connect_host}}/connectors/drafts/{{draft-id}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "connectors",
+                    "drafts",
+                    "{{draft-id}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Update ConnectorDraft by id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"draft-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"draft-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"draft-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"draft-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"draft-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"draft-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"version\" : 1,\n  \"actions\" : [ {\n    \"action\" : \"setName\",\n    \"name\" : \"Connector Name\"\n  } ]\n}"
+                },
+                "url": {
+                  "raw": "{{connect_host}}/connectors/drafts/{{draft-id}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "connectors",
+                    "drafts",
+                    "{{draft-id}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Get ConnectorDraft by key",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"draft-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"draft-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"draft-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"draft-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"draft-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"draft-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{connect_host}}/connectors/drafts/key={{draft-key}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "connectors",
+                    "drafts",
+                    "key={{draft-key}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Update ConnectorDraft by key",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"draft-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"draft-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"draft-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"draft-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"draft-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"draft-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"version\": 215,\n    \"actions\": [\n        {\n            \"action\": \"setRepository\",\n            \"url\": \"git@github.com/Worldpay/Worldpay-CommerceTools-RAFT.git\",\n            \"tag\": \"0.28.0\"\n        }\n    ]\n}"
+                },
+                "url": {
+                  "raw": "{{connect_host}}/connectors/drafts/key={{draft-key}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "connectors",
+                    "drafts",
+                    "key={{draft-key}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Publish Connector Draft",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"draft-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"draft-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"draft-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"draft-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"draft-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"draft-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"version\": 221,\n    \"actions\": [\n        {\n            \"action\": \"publish\",\n            \"certification\": false\n        }\n    ]\n}"
+                },
+                "url": {
+                  "raw": "{{connect_host}}/connectors/drafts/key={{draft-key}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "connectors",
+                    "drafts",
+                    "key={{draft-key}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Unlist Connector",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"draft-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"draft-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"draft-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"draft-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"draft-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"draft-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"version\" : 220,\n  \"actions\" : [ {\n    \"action\" : \"unlist\"\n  } ]\n}"
+                },
+                "url": {
+                  "raw": "{{connect_host}}/connectors/drafts/key={{draft-key}}",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "connectors",
+                    "drafts",
+                    "key={{draft-key}}"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Create ConnectorDraft",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"draft-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"draft-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"draft-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"draft-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"draft-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"draft-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"key\": \"worldpay-raft\",\n    \"name\": \"Gradient Edge Worldpay RAFT connector\",\n    \"description\": \"A commercetools connector for Worldpay RAFT payments\",\n    \"creator\": {\n        \"title\": \"Gradient Edge\",\n        \"name\": \"Gradient Edge\",\n        \"email\": \"support@gradientedge.com\",\n        \"company\": \"Gradient Edge\",\n        \"noOfContributors\": 5\n    },\n    \"repository\": {\n        \"url\": \"git@github.com/Worldpay/Worldpay-CommerceTools-RAFT.git\",\n        \"tag\": \"0.28.0\"\n    },\n    \"privateProjects\": [\"ge-sandbox-worldpay-integration\"],\n    \"supportedRegions\": [\"europe-west1.gcp\"]\n}"
+                },
+                "url": {
+                  "raw": "{{connect_host}}/connectors/drafts",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "connectors",
+                    "drafts"
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            },
+            {
+              "name": "Query drafts",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                      "var data = JSON.parse(responseBody);",
+                      "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                      "    pm.environment.set(\"draft-id\", data.results[0].id); ",
+                      "    pm.environment.set(\"draft-version\", data.results[0].version);",
+                      "}",
+                      "if(data.results && data.results[0] && data.results[0].key){",
+                      "    pm.environment.set(\"draft-key\", data.results[0].key); ",
+                      "}",
+                      "if(data.version){",
+                      "    pm.environment.set(\"draft-version\", data.version);",
+                      "}",
+                      "if(data.id){",
+                      "    pm.environment.set(\"draft-id\", data.id); ",
+                      "}",
+                      "if(data.key){",
+                      "    pm.environment.set(\"draft-key\", data.key);",
+                      "}",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{ctp_access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{connect_host}}/connectors/drafts",
+                  "host": [
+                    "{{connect_host}}"
+                  ],
+                  "path": [
+                    "connectors",
+                    "drafts"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "offset",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "sort",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "null"
+              },
+              "response": []
+            }
+          ],
+          "description": "null"
+        },
+        {
+          "name": "Get Connector by id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                  "var data = JSON.parse(responseBody);",
+                  "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                  "    pm.environment.set(\"connector-id\", data.results[0].id); ",
+                  "    pm.environment.set(\"connector-version\", data.results[0].version);",
+                  "}",
+                  "if(data.results && data.results[0] && data.results[0].key){",
+                  "    pm.environment.set(\"connector-key\", data.results[0].key); ",
+                  "}",
+                  "if(data.version){",
+                  "    pm.environment.set(\"connector-version\", data.version);",
+                  "}",
+                  "if(data.id){",
+                  "    pm.environment.set(\"connector-id\", data.id); ",
+                  "}",
+                  "if(data.key){",
+                  "    pm.environment.set(\"connector-key\", data.key);",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessToken",
+                  "value": "{{ctp_access_token}}",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenType",
+                  "value": "Bearer",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{connect_host}}/connectors/{{connector-id}}",
+              "host": [
+                "{{connect_host}}"
+              ],
+              "path": [
+                "connectors",
+                "{{connector-id}}"
+              ]
+            },
+            "description": "null"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Connector by key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                  "var data = JSON.parse(responseBody);",
+                  "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                  "    pm.environment.set(\"connector-id\", data.results[0].id); ",
+                  "    pm.environment.set(\"connector-version\", data.results[0].version);",
+                  "}",
+                  "if(data.results && data.results[0] && data.results[0].key){",
+                  "    pm.environment.set(\"connector-key\", data.results[0].key); ",
+                  "}",
+                  "if(data.version){",
+                  "    pm.environment.set(\"connector-version\", data.version);",
+                  "}",
+                  "if(data.id){",
+                  "    pm.environment.set(\"connector-id\", data.id); ",
+                  "}",
+                  "if(data.key){",
+                  "    pm.environment.set(\"connector-key\", data.key);",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessToken",
+                  "value": "{{ctp_access_token}}",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenType",
+                  "value": "Bearer",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{connect_host}}/connectors/key={{connector-key}}",
+              "host": [
+                "{{connect_host}}"
+              ],
+              "path": [
+                "connectors",
+                "key={{connector-key}}"
+              ]
+            },
+            "description": "null"
+          },
+          "response": []
+        },
+        {
+          "name": "Search Connectors",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "tests[\"Status code \" + responseCode.code] = responseCode.code === 200 || responseCode.code === 201;",
+                  "var data = JSON.parse(responseBody);",
+                  "if(data.results && data.results[0] && data.results[0].id && data.results[0].version){",
+                  "    pm.environment.set(\"search-id\", data.results[0].id); ",
+                  "    pm.environment.set(\"search-version\", data.results[0].version);",
+                  "}",
+                  "if(data.results && data.results[0] && data.results[0].key){",
+                  "    pm.environment.set(\"search-key\", data.results[0].key); ",
+                  "}",
+                  "if(data.version){",
+                  "    pm.environment.set(\"search-version\", data.version);",
+                  "}",
+                  "if(data.id){",
+                  "    pm.environment.set(\"search-id\", data.id); ",
+                  "}",
+                  "if(data.key){",
+                  "    pm.environment.set(\"search-key\", data.key);",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessToken",
+                  "value": "{{ctp_access_token}}",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenType",
+                  "value": "Bearer",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{connect_host}}/connectors/search",
+              "host": [
+                "{{connect_host}}"
+              ],
+              "path": [
+                "connectors",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "text",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "offset",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "private",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "creator.company",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "id",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "key",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Retrieves all available Connectors."
+          },
+          "response": []
+        }
+      ],
+      "description": "null"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessToken",
+        "value": "{{ctp_access_token}}",
+        "type": "string"
+      },
+      {
+        "key": "addTokenTo",
+        "value": "header",
+        "type": "string"
+      },
+      {
+        "key": "tokenType",
+        "value": "Bearer",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": "{{connect_host}}",
+      "type": "string"
+    }
+  ]
 }

@@ -1,17 +1,17 @@
 {
   "key": "customer",
   "name": {
-    "en": "Customer RAFT data"
+    "en": "WorldPay RAFT card on file"
   },
   "description": {
-    "en": "Customer Type"
+    "en": "CardOnFile payment methods for WorldPay RAFT payments"
   },
   "resourceTypeIds": ["customer"],
   "fieldDefinitions": [
     {
-      "name": "raftTokenizedCards",
+      "name": "cardOnFileTokens",
       "label": {
-        "en": "The customer's RAFT tokenized payment cards"
+        "en": "The customer's tokenised cardOnFile"
       },
       "required": false,
       "type": {
