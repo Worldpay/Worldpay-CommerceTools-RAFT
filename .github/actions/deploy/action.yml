@@ -5,7 +5,7 @@ inputs:
   working-dir-app:
     description: 'set the current application working directory'
     required: true
-    default: './worldpay-raft-connector'
+    default: './worldpay-raft-connect'
 
 runs:
   using: "composite"

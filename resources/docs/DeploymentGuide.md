@@ -5,7 +5,7 @@ This guide details how to deploy the connector within a commercetools (productio
 Deployment involves several steps:
 
 1. Deploy the commercetools model extensions, adding the custom fields and states to the commercetools project
-    1. Customer extension: adds the raftTokenizedCards property
+    1. Customer extension: adds the cardOnFileTokens property
     1. Payment extension: adds the custom fields for RAFT
     1. Payment interaction extension: adds the RAFT interface interaction
     1. Payment states: adds the custom payment states that support progressing the payment
@@ -32,21 +32,21 @@ To install the connector, follow these steps:
     1. Deploy the commercetools model extensions for payment, transaction and/or customer.
     2. Configure the commercetools project to invoke the RAFT connector for Payment Create/Update API extensions.
 
-The connector code is provided in the package `@gradientedge/connector`, and the deployment just forms a thin wrapper around it. It also picks up deployment-specific configuration parameters and passes them into the connector in the form of an object. Configuration in AWS lambda for instance, could read the configuration from AWS Secrets, builds a TypeScript configuration object with that, and start the connector as lambda passing the configuration.
-When deploying as a commercetools connect application or a Docker image, the `@gradientedge/connector` is wrapped in an express application, which is configured via environment variables, and receives the payment update via a http(s) request. The environment variables need to be converted into a configuration object and passed to the connector. The https request will be unpacked, and from that point onwards, the code is shared with the lambda version.
+The connector code is provided in the package `@gradientedge/worldpay-raft-connector`, and the deployment just forms a thin wrapper around it. It also picks up deployment-specific configuration parameters and passes them into the connector in the form of an object. Configuration in AWS lambda for instance, could read the configuration from AWS Secrets, builds a TypeScript configuration object with that, and start the connector as lambda passing the configuration.
+When deploying as a commercetools connect application or a Docker image, the `@gradientedge/worldpay-raft-connector` is wrapped in an express application, which is configured via environment variables, and receives the payment update via a http(s) request. The environment variables need to be converted into a configuration object and passed to the connector. The https request will be unpacked, and from that point onwards, the code is shared with the lambda version.
 We recommend using a https connection with [authentication](https://docs.commercetools.com/api/projects/api-extensions#httpdestinationauthentication) enabled, so the endpoint cannot be accessed by everyone. Also, if possible, protect your endpoint with a firewall and limit the sources from which it accepts requests (for instance, if you run commercetools in GCP US, restrict the access to IP addresses for GCP US).
 
 #### Model extensions and states
 
 There are a number of files included in the connector for extending the data model(s) from commercetools and the payment states:
-See folder `infrastructure/resources/types`. You can create the model extensions in your commercetools project by invoking the [Custom Types](https://docs.commercetools.com/tutorial$s/custom-types#creating-a-custom-type) endpoint of commercetools. Use your own IaC (infrastructure as code) framework for automated deployment (i.e. Terraform with the [commercetools provider](https://registry.terraform.io/providers/labd/commercetools/latest/docs)), or the [commercetools postman project collection](https://docs.commercetools.com/sdk/postman) to deploy the model extensions to your commercetools project.
+See folder `resources/commercetools`. You can create the model extensions in your commercetools project by invoking the [Custom Types](https://docs.commercetools.com/tutorial$s/custom-types#creating-a-custom-type) endpoint of commercetools. Use your own IaC (infrastructure as code) framework for automated deployment (i.e. Terraform with the [commercetools provider](https://registry.terraform.io/providers/labd/commercetools/latest/docs)), or the [commercetools postman project collection](https://docs.commercetools.com/sdk/postman) to deploy the model extensions to your commercetools project.
 
-| File name                                   | Description                                      |
-|---------------------------------------------|--------------------------------------------------|
-| payment-states.json                         | The payment states to add. Run each entry in the `states` array in a separate `createState` call to commercetools |
-| worldpay-customer-card-on-file.json         | Model for the customer's card--on-file object(s). This is modelled as a list of strings, where each string holds a JSON object with the credit card store on-file for the customer. Using a string per card allows removal of a single card from the merchant center. |
-| worldpay-payment-interface-interaction.json | Interface interactions between the RAFT connector and WorldPay RAFT. Each request/response call is logged in this model |
-| worldpay-payment.json                       | The payment extensions, with the custom fields for the WorldPay RAFT customizations. |
+| File name                   | Description                                      |
+|-----------------------------|--------------------------------------------------|
+| payment-states.json         | The payment states to add. Run each entry in the `states` array in a separate `createState` call to commercetools |
+| customer-types.json         | Model for the customer's card--on-file object(s). This is modelled as a list of strings, where each string holds a JSON object with the credit card store on-file for the customer. Using a string per card allows removal of a single card from the merchant center. |
+| payment-types.json          | The payment extensions, with the custom fields for the WorldPay RAFT customizations. |
+| transaction-types.json      | The transaction model extensions for storing transaction-specific custom fields and a retryCount |
 
 Concerning the payment states:
 
