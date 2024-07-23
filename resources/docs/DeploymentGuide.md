@@ -46,7 +46,6 @@ See folder `resources/commercetools`. You can create the model extensions in you
 | payment-states.json         | The payment states to add. Run each entry in the `states` array in a separate `createState` call to commercetools |
 | customer-types.json         | Model for the customer's card--on-file object(s). This is modelled as a list of strings, where each string holds a JSON object with the credit card store on-file for the customer. Using a string per card allows removal of a single card from the merchant center. |
 | payment-types.json          | The payment extensions, with the custom fields for the WorldPay RAFT customizations. |
-| transaction-types.json      | The transaction model extensions for storing transaction-specific custom fields and a retryCount |
 
 Concerning the payment states:
 

@@ -31,10 +31,8 @@ serviceRouter.post('/', async (req, res) => {
     }
     default:
       return res
-        .status(Status.InternalServerError)
-        .send(
-          `Internal Server Error - Resource typeId [${resource?.typeId}] not recognized. Allowed values are 'payment'.`,
-        )
+        .status(Status.BadRequest)
+        .send(`Bad Request - Resource typeId not recognized. Allowed values are 'payment'.`)
   }
 })
 
