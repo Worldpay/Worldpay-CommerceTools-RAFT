@@ -126,7 +126,7 @@ describe('Validation', () => {
         ReferenceTraceNumbers: {
           RetrievalREFNumber: '200634200634',
         },
-        WorldPayMerchantID: '4445012345678',
+        WorldPayMerchantID: '01234567890123456789',
         APITransactionID: '2019120412271401',
         LocalDateTime: '2020-03-17T14:53:54',
       },
@@ -151,7 +151,7 @@ describe('Validation', () => {
         ReferenceTraceNumbers: {
           RetrievalREFNumber: '200634200634',
         },
-        WorldPayMerchantID: '4445012345678',
+        WorldPayMerchantID: '01234567890123456789',
         APITransactionID: '2019120412271401',
         LocalDateTime: '2020-03-17T14:53:54',
       },
