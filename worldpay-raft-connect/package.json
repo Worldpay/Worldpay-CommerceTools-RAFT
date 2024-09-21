@@ -52,7 +52,7 @@
     "@reflet/http": "^1.0.0",
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.4",
-    "express": "^4.19.2",
+    "express": "^4.20.0",
     "express-basic-auth": "^1.2.0",
     "yup": "^1.4.0"
   }
