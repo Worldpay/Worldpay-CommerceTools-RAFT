@@ -33,7 +33,7 @@
     "@gradientedge/logger": "4.0.0",
     "@gradientedge/worldpay-raft-messages": "file:../worldpay-raft-messages",
     "@reflet/http": "1.0.0",
-    "axios": "1.6.5",
+    "axios": "^1.7.7",
     "yup": "1.4.0"
   },
   "devDependencies": {

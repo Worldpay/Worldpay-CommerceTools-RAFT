@@ -1,54 +1,85 @@
 {
-  "info": {
-    "_postman_id": "23027ce8-9c40-47aa-b364-a2b53f30be60",
-    "name": "Direct extension invocations",
-    "description": "You can directly call into the extension, either by starting the connector locally (`npm run start:dev`) or by calling the extension deployed in the commercetools infrastructure. The URL of the extension is dynamically generated, but persisted into the extensions (or subscription if you are working on that) in the commercetools project where the connector is deployed.\n\nWhen the connector is protected with basic authentication, you need to add a header `Authorization: Basic` where secret is the base64 encoded string with user:password. (User is admin in case of worldpay RAFT, the password is defined upon creation of the deployment of the connector).",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "9308725"
-  },
-  "item": [
-    {
-      "name": "extension",
-      "item": [
-        {
-          "name": "Create Payment",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Basic <<BasicAuthToken>>",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"action\": \"Create\",\n    \"resource\": {\n        \"typeId\": \"payment\",\n        \"id\": \"9999-9999-9999-aaaa\",\n        \"obj\": {\n            \"id\": \"0c3edd4d-6da4-4121-a814-36f28df671fb\",\n            \"version\": 1,\n            \"lastMessageSequenceNumber\": 1,\n            \"createdAt\": \"1970-01-01T00:00:00.000Z\",\n            \"lastModifiedAt\": \"1970-01-01T00:00:00.000Z\",\n            \"lastModifiedBy\": {\n                \"customer\": {\n                    \"typeId\": \"customer\",\n                    \"id\": \"9569a6c3-e3bf-43f9-b4a9-54592d08a853\"\n                }\n            },\n            \"createdBy\": {\n                \"customer\": {\n                    \"typeId\": \"customer\",\n                    \"id\": \"9569a6c3-e3bf-43f9-b4a9-54592d08a853\"\n                }\n            },\n            \"customer\": {\n                \"typeId\": \"customer\",\n                \"id\": \"9569a6c3-e3bf-43f9-b4a9-54592d08a853\"\n            },\n            \"amountPlanned\": {\n                \"type\": \"centPrecision\",\n                \"currencyCode\": \"GBP\",\n                \"centAmount\": 259649,\n                \"fractionDigits\": 2\n            },\n            \"paymentMethodInfo\": {\n                \"paymentInterface\": \"worldpay\",\n                \"method\": \"card\"\n            },\n            \"custom\": {\n                \"type\": {\n                    \"typeId\": \"type\",\n                    \"id\": \"0636f852-15cb-4925-ac60-7e0c9041b9fc\"\n                },\n                \"fields\": {\n                    \"cartId\": \"62e207d7-4bab-4eb7-aeec-e1c8dfdb9350\",\n                    \"languageCode\": \"en\",\n                    \"creditAuthRequest\": \"{\\n  \\\"creditauth\\\": {\\n    \\\"MiscAmountsBalances\\\": {\\n      \\\"TransactionAmount\\\": \\\"2000.00\\\"\\n    },\\n    \\\"WorldPayMerchantID\\\": \\\"01234567890123456789\\\",\\n    \\\"LocalDateTime\\\": \\\"20231114T161412.000\\\"\\n  }\\n}\"\n                }\n            },\n            \"paymentStatus\": {},\n            \"transactions\": [],\n            \"interfaceInteractions\": []\n        }\n    }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{extension-host}}/service",
-              "host": [
-                "{{extension-host}}"
-              ],
-              "path": [
-                "service"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    }
-  ],
-  "variable": [
-    {
-      "key": "extension-host",
-      "value": "http://localhost:8080"
-    }
-  ]
+	"info": {
+		"_postman_id": "23027ce8-9c40-47aa-b364-a2b53f30be60",
+		"name": "Direct extension invocations",
+		"description": "You can directly call into the extension, either by starting the connector locally (`npm run start:dev`) or by calling the extension deployed in the commercetools infrastructure. The URL of the extension is dynamically generated, but persisted into the extensions (or subscription if you are working on that) in the commercetools project where the connector is deployed.\n\nWhen the connector is protected with basic authentication, you need to add a header `Authorization: Basic` where secret is the base64 encoded string with user:password. (User is admin in case of worldpay RAFT, the password is defined upon creation of the deployment of the connector).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9308725"
+	},
+	"item": [
+		{
+			"name": "extension",
+			"item": [
+				{
+					"name": "Create Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46a2hzLTdOalJVZWYzSGJzRDlFYzR3ZHpnLktwX3hZ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"Create\",\n    \"resource\": {\n        \"typeId\": \"payment\",\n        \"id\": \"0c3edd4d-6da4-4121-a814-36f28df671fb\",\n        \"obj\": {\n            \"id\": \"0c3edd4d-6da4-4121-a814-36f28df671fb\",\n            \"version\": 1,\n            \"lastMessageSequenceNumber\": 1,\n            \"createdAt\": \"1970-01-01T00:00:00.000Z\",\n            \"lastModifiedAt\": \"1970-01-01T00:00:00.000Z\",\n            \"lastModifiedBy\": {\n                \"customer\": {\n                    \"typeId\": \"customer\",\n                    \"id\": \"9569a6c3-e3bf-43f9-b4a9-54592d08a853\"\n                }\n            },\n            \"createdBy\": {\n                \"customer\": {\n                    \"typeId\": \"customer\",\n                    \"id\": \"9569a6c3-e3bf-43f9-b4a9-54592d08a853\"\n                }\n            },\n            \"customer\": {\n                \"typeId\": \"customer\",\n                \"id\": \"9569a6c3-e3bf-43f9-b4a9-54592d08a853\"\n            },\n            \"amountPlanned\": {\n                \"type\": \"centPrecision\",\n                \"currencyCode\": \"GBP\",\n                \"centAmount\": 259649,\n                \"fractionDigits\": 2\n            },\n            \"paymentMethodInfo\": {\n                \"paymentInterface\": \"worldpay\",\n                \"method\": \"card\"\n            },\n            \"custom\": {\n                \"type\": {\n                    \"typeId\": \"type\",\n                    \"id\": \"0636f852-15cb-4925-ac60-7e0c9041b9fc\"\n                },\n                \"fields\": {\n                    \"cartId\": \"62e207d7-4bab-4eb7-aeec-e1c8dfdb9350\",\n                    \"languageCode\": \"en\",\n                    \"creditAuthRequest\": \"{\\n  \\\"creditauth\\\": {\\n    \\\"MiscAmountsBalances\\\": {\\n      \\\"TransactionAmount\\\": \\\"2000.00\\\"\\n    },\\n    \\\"WorldPayMerchantID\\\": \\\"01234567890123456789\\\",\\n    \\\"LocalDateTime\\\": \\\"20231114T161412.000\\\"\\n  }\\n}\"\n                }\n            },\n            \"paymentStatus\": {},\n            \"transactions\": [],\n            \"interfaceInteractions\": []\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{extension-host}}/service",
+							"host": [
+								"{{extension-host}}"
+							],
+							"path": [
+								"service"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "local",
+			"item": [
+				{
+					"name": "Post payment to connector",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"Create\",\n    \"resource\": {\n        \"typeId\": \"payment\",\n        \"id\": \"3a44193d-5245-48d1-8f34-8bd970069e00\",\n        \"obj\": {\n            \"id\": \"3a44193d-5245-48d1-8f34-8bd970069e00\",\n            \"version\": 1,\n            \"lastMessageSequenceNumber\": 1,\n            \"createdAt\": \"1970-01-01T00:00:00.000Z\",\n            \"lastModifiedAt\": \"1970-01-01T00:00:00.000Z\",\n            \"lastModifiedBy\": {\n                \"clientId\": \"I_WZCQByaAgMWkxEQ1v3dazU\",\n                \"isPlatformClient\": false\n            },\n            \"createdBy\": {\n                \"clientId\": \"I_WZCQByaAgMWkxEQ1v3dazU\",\n                \"isPlatformClient\": false\n            },\n            \"key\": \"123456\",\n            \"interfaceId\": \"789011\",\n            \"amountPlanned\": {\n                \"type\": \"centPrecision\",\n                \"currencyCode\": \"USD\",\n                \"centAmount\": 2000,\n                \"fractionDigits\": 2\n            },\n            \"paymentMethodInfo\": {\n                \"paymentInterface\": \"worldpay-raft\",\n                \"method\": \"card\"\n            },\n            \"custom\": {\n                \"type\": {\n                    \"typeId\": \"type\",\n                    \"id\": \"e3246665-277c-4aa1-ac5d-34c7ee6bec9c\"\n                },\n                \"fields\": {\n                    \"request\": \"{\\n  \\\"creditauth\\\": {\\n    \\\"MiscAmountsBalances\\\": {\\n      \\\"TransactionAmount\\\": \\\"20.00\\\"\\n    },\\n    \\\"WorldPayMerchantID\\\": \\\"000038439802\\\", \\\"APITransactionID\\\": \\\"0000000000000005\\\", \\\"LocalDateTime\\\": \\\"2023-12-08T12:54:22\\\"\\n  }\\n}\"\n                }\n            },\n            \"paymentStatus\": {},\n            \"transactions\": [],\n            \"interfaceInteractions\": []\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local-lambda}}/worldpay-raft-extension",
+							"host": [
+								"{{local-lambda}}"
+							],
+							"path": [
+								"worldpay-raft-extension"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "extension-host",
+			"value": "http://localhost:8080"
+		}
+	]
 }

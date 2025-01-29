@@ -13,10 +13,7 @@ export function validateEnvVars(envVars: unknown) {
     commercetools: object({
       clientId: string().required().min(24).max(24),
       clientSecret: string().required().min(32).max(32),
-      projectKey: string()
-        .required()
-        .min(2)
-        .test('String number must conform to "/^[a-zA-Z0-9-_]+$"', (value) => /^[a-zA-Z0-9-_]+$/.test(value)),
+      projectKey: string().required().min(2),
       scopes: string().optional().min(2),
       region: string().required().oneOf(VALID_REGIONS),
     }),
