@@ -28,22 +28,25 @@
     "url": "https://github.com/gradientedge/commercetools-connect-poc/issues"
   },
   "dependencies": {
-    "@commercetools/platform-sdk": "7.9.0",
-    "@commercetools/sdk-client-v2": "2.5.0",
+    "@commercetools/platform-sdk": "8.1.0",
+    "@commercetools/sdk-client-v2": "3.0.0",
     "@gradientedge/logger": "4.0.0",
     "@gradientedge/worldpay-raft-messages": "file:../worldpay-raft-messages",
     "@reflet/http": "1.0.0",
     "axios": "^1.7.7",
-    "yup": "1.4.0"
+    "yup": "1.6.1"
   },
   "devDependencies": {
     "@swc/jest": "^0.2.29",
-    "@tsconfig/recommended": "^1.0.7",
-    "@types/jest": "^29.5.8",
+    "@tsconfig/recommended": "^1.0.8",
+    "@types/jest": "^29.5.14",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
     "eslint": "^8.54.0",
     "jest": "^29.7.0",
-    "prettier": "^3.3.2"
+    "prettier": "^3.4.2"
+  },
+  "overrides": {
+    "cross-spawn": "^7.0.6"
   }
 }
