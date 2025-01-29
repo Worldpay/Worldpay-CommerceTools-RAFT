@@ -57,7 +57,7 @@ export function giftCardRefund(options: GiftCardRefundParams): GiftCardRefund {
     (options.payment?.custom?.fields?.tokenizedPAN === RAFT_TEST_GIFT_CARD &&
     options.payment?.custom?.fields?.gcSecurityCode === RAFT_TEST_CARD_SECURITY_CODE
       ? RAFT_TEST_GIFT_CARD_REFUND_AMOUNT
-      : transaction?.amount ?? options.payment?.amountPlanned)
+      : (transaction?.amount ?? options.payment?.amountPlanned))
   return {
     giftcardrefund: {
       ...withMiscAmountsBalances({ transactionAmount }),
