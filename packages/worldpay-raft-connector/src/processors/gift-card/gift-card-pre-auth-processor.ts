@@ -28,6 +28,7 @@ import {
   buildPaymentStatusInterfaceTextAction,
   buildSuccess,
   buildUpdatePaymentStateAction,
+  StateKey,
 } from '../../commercetools'
 import { axiosError } from '../../convert-errors'
 
@@ -79,41 +80,64 @@ function processRaftResponse(transaction: Transaction, message: GiftCardPreAuth,
   actions.push(buildPaymentMethodNameAction(WORLDPAY_RAFT_PAYMENT_METHOD_GIFT_CARD))
 
   if (response) {
-    const reversal = message.giftcardpreauth?.AuthorizationType === AuthorizationType.Reversal
     const success = getTransactionSuccess(result, response)
-    if (transaction) {
-      // Update the existing transaction, marking it as failed if it was a reversal of a timed out transaction
-      const retryCount = transaction.custom?.fields?.retryCount ?? 1
-      actions.push(...buildChangeTransactionActions(transaction, success && retryCount >= 0))
-    } else {
-      // Create a new transaction
-      if (success && !reversal) {
-        actions.push(buildPaymentInterfaceIdAction(message.giftcardpreauth.APITransactionID))
-      }
-      actions.push(
-        buildAddTransaction(
-          message.giftcardpreauth.MiscAmountsBalances.TransactionAmount,
-          reversal ? 'CancelAuthorization' : 'Authorization',
-          success ? 'Success' : 'Failure',
-          response.giftcardpreauthresponse?.STPData?.STPReferenceNUM,
-          response.giftcardpreauthresponse?.ReferenceTraceNumbers?.AuthorizationNumber,
-          response.giftcardpreauthresponse?.ReferenceTraceNumbers?.RetrievalREFNumber,
-        ),
-      )
-    }
-    if (response.giftcardpreauthresponse?.STPData?.STPReferenceNUM) {
-      actions.push(buildAddSTPReferenceNUMAction(response.giftcardpreauthresponse?.STPData?.STPReferenceNUM))
+    actions.push(...buildResponseActions(response, transaction, message, success))
+  }
+
+  return actions
+}
+
+function buildResponseActions(
+  response: GiftCardPreAuthResponse,
+  transaction: Transaction,
+  message: GiftCardPreAuth,
+  success: boolean,
+): PaymentUpdateAction[] {
+  const reversal = message.giftcardpreauth?.AuthorizationType === AuthorizationType.Reversal
+  const actions: PaymentUpdateAction[] = []
+  if (transaction) {
+    // Update the existing transaction, marking it as failed if it was a reversal of a timed out transaction
+    const retryCount = transaction.custom?.fields?.retryCount ?? 1
+    actions.push(...buildChangeTransactionActions(transaction, success && retryCount >= 0))
+  } else {
+    // Create a new transaction
+    if (success && !reversal) {
+      actions.push(buildPaymentInterfaceIdAction(message.giftcardpreauth.APITransactionID))
     }
     actions.push(
-      buildUpdatePaymentStateAction(success ? (reversal ? 'payment-cancelled' : 'payment-open') : 'payment-failed'),
+      buildAddTransaction(
+        message.giftcardpreauth.MiscAmountsBalances.TransactionAmount,
+        reversal ? 'CancelAuthorization' : 'Authorization',
+        success ? 'Success' : 'Failure',
+        response.giftcardpreauthresponse?.STPData?.STPReferenceNUM,
+        response.giftcardpreauthresponse?.ReferenceTraceNumbers?.AuthorizationNumber,
+        response.giftcardpreauthresponse?.ReferenceTraceNumbers?.RetrievalREFNumber,
+      ),
     )
-    actions.push(buildPaymentStatusInterfaceCodeAction(response.giftcardpreauthresponse?.ReturnCode))
-    actions.push(buildPaymentStatusInterfaceTextAction(response.giftcardpreauthresponse?.ReasonCode))
-    const expiryDate = message.giftcardpreauth?.CardInfo?.ExpirationDate
-    if (success && !reversal && expiryDate) {
-      actions.push(buildAddExpirationDateAction(expiryDate))
-    }
   }
+  if (response.giftcardpreauthresponse?.STPData?.STPReferenceNUM) {
+    actions.push(buildAddSTPReferenceNUMAction(response.giftcardpreauthresponse?.STPData?.STPReferenceNUM))
+  }
+  const successKey: StateKey = reversal ? 'payment-cancelled' : 'payment-open'
+  actions.push(
+    buildUpdatePaymentStateAction(success ? successKey : 'payment-failed'),
+    ...buildPaymentStatusInterfaceActions(response),
+  )
+
+  const expiryDate = message.giftcardpreauth?.CardInfo?.ExpirationDate
+  if (success && !reversal && expiryDate) {
+    actions.push(buildAddExpirationDateAction(expiryDate))
+  }
+  return actions
+}
+
+function buildPaymentStatusInterfaceActions(response: GiftCardPreAuthResponse): PaymentUpdateAction[] {
+  const actions: PaymentUpdateAction[] = []
+  actions.push(
+    buildPaymentStatusInterfaceCodeAction(response.giftcardpreauthresponse?.ReturnCode),
+    buildPaymentStatusInterfaceTextAction(response.giftcardpreauthresponse?.ReasonCode),
+  )
+
   return actions
 }
 

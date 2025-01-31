@@ -29,7 +29,7 @@ export const readConfiguration = (): ConnectorConfig => {
         URL: process.env.WORLDPAY_URL as string,
         path: process.env.WORLDPAY_PATH as string,
         license: process.env.WORLDPAY_LICENSE as string,
-        timeoutMs: parseInt(process.env.WORLDPAY_TIMEOUT_MS ?? '5000'),
+        timeoutMs: parseInt(process.env.WORLDPAY_TIMEOUT_MS ?? '5000') || 5000,
       },
       connector: {
         user: 'admin',

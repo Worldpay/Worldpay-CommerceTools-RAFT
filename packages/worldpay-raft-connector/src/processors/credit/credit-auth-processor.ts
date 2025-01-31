@@ -96,41 +96,57 @@ function processRaftResponse(
   }
   if (response) {
     const success = getTransactionSuccess(result, response)
-    if (transaction) {
-      // Update the existing transaction, marking it as failed if it was a reversal of a timed out transaction
-      const retryCount = transaction.custom?.fields?.retryCount ?? 1
-      actions.push(...buildChangeTransactionActions(transaction, success && retryCount >= 0))
-    } else {
-      // Create a new transaction
+    actions.push(...buildResponseActions(response, transaction, message, success))
+  }
 
-      actions.push(
-        buildAddTransaction(
-          message.creditauth.MiscAmountsBalances.TransactionAmount,
-          reversal ? 'CancelAuthorization' : 'Authorization',
-          success ? 'Success' : 'Failure',
-          response?.creditauthresponse?.STPData?.STPReferenceNUM,
-          response?.creditauthresponse?.ReferenceTraceNumbers?.AuthorizationNumber,
-          response?.creditauthresponse?.ReferenceTraceNumbers?.RetrievalREFNumber,
-        ),
-      )
-    }
-    if (response?.creditauthresponse?.STPData?.STPReferenceNUM) {
-      actions.push(buildAddSTPReferenceNUMAction(response?.creditauthresponse?.STPData.STPReferenceNUM))
-    }
-    actions.push(buildUpdatePaymentStateAction(getPaymentState(success, reversal, transaction)))
-    actions.push(buildPaymentStatusInterfaceCodeAction(response.creditauthresponse?.ReturnCode))
-    actions.push(buildPaymentStatusInterfaceTextAction(response.creditauthresponse?.ReasonCode))
-    if (response.creditauthresponse?.ProcFlagsIndicators?.PinlessConverted === BooleanString.YES) {
-      actions.push(buildAddPinlessConvertedAction())
-    }
-    const tokenizedPAN = response?.creditauthresponse?.EncryptionTokenData?.TokenizedPAN
-    if (success && !reversal && tokenizedPAN) {
-      actions.push(buildAddTokenizedPANAction(tokenizedPAN))
-    }
-    const expiryDate = message.creditauth?.CardInfo?.ExpirationDate
-    if (success && !reversal && expiryDate) {
-      actions.push(buildAddExpirationDateAction(expiryDate))
-    }
+  return actions
+}
+
+function buildResponseActions(
+  response: CreditAuthResponse,
+  transaction: Transaction,
+  message: CreditAuth,
+  success: boolean,
+): PaymentUpdateAction[] {
+  const reversal = message.creditauth?.AuthorizationType === AuthorizationType.Reversal
+  const actions: PaymentUpdateAction[] = []
+  if (transaction) {
+    // Update the existing transaction, marking it as failed if it was a reversal of a timed out transaction
+    const retryCount = transaction.custom?.fields?.retryCount ?? 1
+    actions.push(...buildChangeTransactionActions(transaction, success && retryCount >= 0))
+  } else {
+    // Create a new transaction
+
+    actions.push(
+      buildAddTransaction(
+        message.creditauth.MiscAmountsBalances.TransactionAmount,
+        reversal ? 'CancelAuthorization' : 'Authorization',
+        success ? 'Success' : 'Failure',
+        response?.creditauthresponse?.STPData?.STPReferenceNUM,
+        response?.creditauthresponse?.ReferenceTraceNumbers?.AuthorizationNumber,
+        response?.creditauthresponse?.ReferenceTraceNumbers?.RetrievalREFNumber,
+      ),
+    )
+  }
+  if (response?.creditauthresponse?.STPData?.STPReferenceNUM) {
+    actions.push(buildAddSTPReferenceNUMAction(response?.creditauthresponse?.STPData.STPReferenceNUM))
+  }
+
+  actions.push(buildUpdatePaymentStateAction(getPaymentState(success, reversal, transaction)))
+  actions.push(buildPaymentStatusInterfaceCodeAction(response.creditauthresponse?.ReturnCode))
+  actions.push(buildPaymentStatusInterfaceTextAction(response.creditauthresponse?.ReasonCode))
+
+  if (response.creditauthresponse?.ProcFlagsIndicators?.PinlessConverted === BooleanString.YES) {
+    actions.push(buildAddPinlessConvertedAction())
+  }
+
+  const tokenizedPAN = response?.creditauthresponse?.EncryptionTokenData?.TokenizedPAN
+  if (success && !reversal && tokenizedPAN) {
+    actions.push(buildAddTokenizedPANAction(tokenizedPAN))
+  }
+  const expiryDate = message.creditauth?.CardInfo?.ExpirationDate
+  if (success && !reversal && expiryDate) {
+    actions.push(buildAddExpirationDateAction(expiryDate))
   }
   return actions
 }
